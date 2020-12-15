@@ -56,6 +56,8 @@ class App extends React.Component {
   };
   setShowTabMenu = (show) => this.setState({ showTabMenu: show });
 
+  historyPush = (url) => this.props.history.push(url);
+
   loadUser = async () => {
     axios
       .get("http://repository.nan/login/check")
@@ -69,7 +71,6 @@ class App extends React.Component {
               nombre: data.nombre,
               apellido: data.apellido,
             });
-            this.setIsLoading(false);
           } else {
             this.setIsLogged(false);
           }
@@ -83,11 +84,6 @@ class App extends React.Component {
         this.setIsLoadingAppBar(false);
       });
   };
-
-  historyPush = (url) => {
-    this.props.history.push(url);
-  };
-
   componentDidMount() {
     this.loadUser();
   }
@@ -127,7 +123,7 @@ class App extends React.Component {
                     {this.state.isLogged ? (
                       ""
                     ) : (
-                      <Route path="/login" >
+                      <Route path="/login">
                         <LoginView controlApp={this.controlApp} />
                       </Route>
                     )}

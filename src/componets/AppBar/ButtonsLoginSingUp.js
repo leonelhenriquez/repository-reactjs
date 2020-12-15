@@ -16,7 +16,7 @@ const ButtonsLoginSingUp = (props) => {
           variant={"outlined"}
           color={"secondary"}
           className={classes.buttons}
-          onClick={() => props.controlApp.historyPush('/login')}
+          onClick={() => props.controlApp.historyPush("/login")}
         >
           Iniciar sesión
         </Button>
@@ -27,7 +27,7 @@ const ButtonsLoginSingUp = (props) => {
           variant={"outlined"}
           color={"secondary"}
           className={classes.buttons}
-          onClick={() => props.controlApp.historyPush('/signup')}
+          onClick={() => props.controlApp.historyPush("/signup")}
         >
           Registrarme
         </Button>

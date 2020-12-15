@@ -18,14 +18,10 @@ import ElevationScroll from "./ElevationScroll";
 const ApplicationBar = (props) => {
   const classes = AppBarStyles();
 
-  const [tabPosition, setTabPosition] = React.useState(
-    props.stateApp.tabMenuPosition
-  );
-
   const handleChangeMenuTab = (event, tabPosition) => {
-    setTabPosition(tabPosition);
     props.controlApp.setTabMenuPosition(tabPosition);
   };
+
   return (
     <div className={classes.root}>
       <ElevationScroll>
@@ -38,10 +34,10 @@ const ApplicationBar = (props) => {
             {props.stateApp.isLogged && false && (
               <Fade in={true}>
                 <IconButton
-                  edge={"start"}
+                  edge="start"
                   className={classes.menuButton}
-                  color={"inherit"}
-                  aria-label={"men"}
+                  color="inherit"
+                  aria-label="men"
                 >
                   <MenuIcon />
                 </IconButton>
@@ -65,15 +61,18 @@ const ApplicationBar = (props) => {
                     <Search />
                   </Fade>
                   <div className={classes.grow} />
-                  <MenuProfile stateApp={props.stateApp} />
+                  <MenuProfile
+                    stateApp={props.stateApp}
+                    controlApp={props.controlApp}
+                  />
                 </>
               ) : (
                 <ButtonsLoginSingUp controlApp={props.controlApp} />
               ))}
           </Toolbar>
-          {props.stateApp.showTabMenu && this.stateApp.isLogged && (
+          {props.stateApp.showTabMenu && props.stateApp.isLogged && (
             <Tabs
-              value={tabPosition}
+              value={props.stateApp.tabMenuPosition}
               indicatorColor="secondary"
               textColor="secondary"
               onChange={handleChangeMenuTab}

@@ -101,7 +101,9 @@ const MenuProfile = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <StyledMenuItem>
+        <StyledMenuItem
+          onClick={() => props.controlApp.historyPush("/profile")}
+        >
           <ListItemIcon>
             <AccountCircleOutlined fontSize="large" color="secondary" />
           </ListItemIcon>
@@ -111,28 +113,36 @@ const MenuProfile = (props) => {
           />
         </StyledMenuItem>
 
-        <StyledMenuItem>
+        <StyledMenuItem
+          onClick={() => props.controlApp.historyPush("/myresources")}
+        >
           <ListItemIcon>
             <CollectionsBookmarkOutlined fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Mis recursos" />
         </StyledMenuItem>
 
-        <StyledMenuItem>
+        <StyledMenuItem
+          onClick={() => props.controlApp.historyPush("/list/favorites")}
+        >
           <ListItemIcon>
             <FavoriteBorderOutlined fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Favoritos" />
         </StyledMenuItem>
 
-        <StyledMenuItem>
+        <StyledMenuItem
+          onClick={() => props.controlApp.historyPush("/list/watchlater")}
+        >
           <ListItemIcon>
             <WatchLaterOutlined fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Ver mas tarde" />
         </StyledMenuItem>
 
-        <StyledMenuItem>
+        <StyledMenuItem
+          onClick={() => props.controlApp.historyPush("/signoff")}
+        >
           <ListItemIcon>
             <ExitToAppOutlined fontSize="small" />
           </ListItemIcon>

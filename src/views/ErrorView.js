@@ -2,7 +2,7 @@ import React from "react";
 import { withStyles, Typography } from "@material-ui/core";
 import { WarningRounded } from "@material-ui/icons";
 
-const useStyles = ((theme) => ({
+const useStyles = (theme) => ({
   rootErrorView: {
     display: "flex",
     flexDirection: "column",
@@ -23,11 +23,10 @@ const useStyles = ((theme) => ({
     margin: 35,
     color: theme.palette.error.main,
   },
-}));
+});
 
 class ErrorView extends React.Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.props.controlApp.setShowTabMenu(false);
   }
@@ -44,4 +43,3 @@ class ErrorView extends React.Component {
 }
 
 export default withStyles(useStyles)(ErrorView);
-

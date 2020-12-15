@@ -1,8 +1,8 @@
 import React from "react";
 import { withStyles, Typography } from "@material-ui/core";
-import { AccountCircleOutlined, WarningRounded } from "@material-ui/icons";
+import { AccountCircleOutlined } from "@material-ui/icons";
 
-const useStyles = ((theme) => ({
+const useStyles = (theme) => ({
   rootLoginView: {
     display: "flex",
     flexDirection: "column",
@@ -23,18 +23,17 @@ const useStyles = ((theme) => ({
     margin: 35,
     color: theme.palette.secondary.main,
   },
-}));
+});
 
 class LoginView extends React.Component {
-  
-  constructor(props){
+  constructor(props) {
     super(props);
     this.props.controlApp.setShowTabMenu(false);
   }
 
   render() {
     const { classes } = this.props;
-    return ( 
+    return (
       <div className={classes.rootLoginView}>
         <AccountCircleOutlined className={classes.iconAccount} />
         <Typography variant="h4">¡Vaya, no hay nada aquí!</Typography>
@@ -44,4 +43,3 @@ class LoginView extends React.Component {
 }
 
 export default withStyles(useStyles)(LoginView);
-
