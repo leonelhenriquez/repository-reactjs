@@ -1,6 +1,7 @@
 import React from "react";
-import { withStyles, Typography } from "@material-ui/core";
-import { AccountCircleOutlined } from "@material-ui/icons";
+import clsx from "clsx";
+import { withStyles, Typography, Card, CardContent, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, TextField } from "@material-ui/core";
+import { AccountCircleOutlined, LockOutlined, VisibilityOffOutlined, VisibilityOutlined } from "@material-ui/icons";
 
 const useStyles = (theme) => ({
   rootLoginView: {
@@ -17,26 +18,75 @@ const useStyles = (theme) => ({
     margin: 0,
     padding: "40px 20px",
   },
+  loginCard: {
+    width: "100%",
+    maxWidth: 350,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2)
+  },
   iconAccount: {
-    width: 125,
-    height: 125,
-    margin: 35,
+    width: 50,
+    height: 50,
+    margin: "0 auto",
     color: theme.palette.secondary.main,
+    textAlign: "center"
+  },
+  margin: {
+    padding: theme.spacing(1),
+  },
+  textField: {
+    width: '100%',
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
 });
 
 class LoginView extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showPassword: false
+    }
     this.props.controlApp.setShowTabMenu(false);
   }
+
+  setShowPassword = (show) => this.setState({showPassword: show});
 
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.rootLoginView}>
-        <AccountCircleOutlined className={classes.iconAccount} />
-        <Typography variant="h4">¡Vaya, no hay nada aquí!</Typography>
+        <Card className={classes.loginCard}>
+          <CardContent>
+            <AccountCircleOutlined className={classes.iconAccount} />
+            <Typography variant="h5">Iniciar sesión</Typography>
+            <FormControl variant="outlined" className={classes.textField}>
+              <TextField
+                type={this.state.showPassword ? 'text' : 'password'}
+                label="Contraseña"
+                variant="outlined"
+                InputProps={{
+                  startAdornment:(
+                    <InputAdornment position="start">
+                      <LockOutlined />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={()=> this.setShowPassword(!this.state.showPassword)}
+                        onMouseDown={(event => event.preventDefault())}
+                      >
+                        {this.state.showPassword ? <VisibilityOutlined /> : <VisibilityOffOutlined />}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </FormControl>
+          </CardContent>
+        </Card>
       </div>
     );
   }

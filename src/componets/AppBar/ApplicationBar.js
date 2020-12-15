@@ -14,6 +14,7 @@ import MenuProfile from "./MenuProfile";
 import Search from "./Search";
 import ButtonsLoginSingUp from "./ButtonsLoginSingUp";
 import ElevationScroll from "./ElevationScroll";
+import clsx from "clsx";
 
 const ApplicationBar = (props) => {
   const classes = AppBarStyles();
@@ -25,7 +26,7 @@ const ApplicationBar = (props) => {
   return (
     <div className={classes.root}>
       <ElevationScroll>
-        <AppBar className="appbar__main">
+        <AppBar className={clsx(classes.appbar, "appbar__main")}>
           <Toolbar
             className={
               props.stateApp.isLogged ? classes.toolbarLogin : classes.toolbar

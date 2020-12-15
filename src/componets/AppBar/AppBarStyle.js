@@ -4,6 +4,9 @@ const AppBarStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
+  appbar: {
+    backgroundColor: "#FFFFFF"
+  },
   grow: {
     flexGrow: 1,
   },
