@@ -5,12 +5,21 @@ import MainApp from "./MainApp";
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 
-ReactDOM.render(
-  <BrowserRouter>
-    <MainApp />
-  </BrowserRouter>,
-  document.getElementById("root")
-);
+if (process.env.NODE_ENV === "production") {
+  ReactDOM.hydrate(
+    <BrowserRouter>
+      <MainApp />
+    </BrowserRouter>,
+    document.getElementById("root")
+  );
+} else {
+  ReactDOM.render(
+    <BrowserRouter>
+      <MainApp />
+    </BrowserRouter>,
+    document.getElementById("root")
+  );
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

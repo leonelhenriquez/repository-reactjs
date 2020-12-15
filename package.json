@@ -21,7 +21,7 @@
   "scripts": {
     "dev": "react-scripts start",
     "production:start": "NODE_ENV=production nodemon ./server/index.js",
-    "start": "npm-run-all --parallel build production:start",
+    "start": "npm-run-all -l -n build production:start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
