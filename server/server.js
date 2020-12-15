@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import express from "express";
-import App from "../src/App";
+import MainApp from "../src/MainApp";
 import path from "path";
 import fs from "fs";
 import { StaticRouter } from "react-router-dom";
@@ -16,7 +16,6 @@ app.get("*", (req, res) => {
   const context = {};
 
   fs.readFile(path.resolve("./build/index.html"), "utf8", (err, data) => {
-    
     if (err) {
       console.error("Something went wrong: ", err);
       return res.status(500).send("Oops, better luck next time !");
@@ -36,7 +35,7 @@ app.get("*", (req, res) => {
         '<div id="root" >' +
           ReactDOMServer.renderToString(
             <StaticRouter location={req.url} context={context}>
-              <App />
+              <MainApp />
             </StaticRouter>
           ) +
           "</div>"
