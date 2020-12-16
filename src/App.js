@@ -3,11 +3,12 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import ApplicationBar from "./componets/AppBar/ApplicationBar";
+import API from "./config/api";
 import theme from "./config/theme";
 import ErrorView from "./views/ErrorView";
 import HomeView from "./views/HomeView";
 import LoadingView from "./views/LoadingView";
-import LoginView from "./views/LoginView";
+import LoginView from "./views/Login/LoginView";
 
 const axios = require("axios");
 
@@ -60,7 +61,7 @@ class App extends React.Component {
 
   loadUser = async () => {
     axios
-      .get("http://repository.nan/login/check")
+      .get(API.baseURL+"login/check")
       .then((response) => {
         if (response.status === 200) {
           let data = response.data;
@@ -111,7 +112,7 @@ class App extends React.Component {
           <div className="mainContainer" style={styleApp.mainContainer}>
             <Container>
               {this.state.isErrorLoad ? (
-                <ErrorView controlApp={this.controlApp}  />
+                <ErrorView controlApp={this.controlApp} />
               ) : this.state.isLoading ? (
                 <LoadingView />
               ) : (
