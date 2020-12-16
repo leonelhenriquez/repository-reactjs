@@ -111,7 +111,7 @@ class App extends React.Component {
           <div className="mainContainer" style={styleApp.mainContainer}>
             <Container>
               {this.state.isErrorLoad ? (
-                <ErrorView />
+                <ErrorView controlApp={this.controlApp}  />
               ) : this.state.isLoading ? (
                 <LoadingView />
               ) : (
