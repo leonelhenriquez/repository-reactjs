@@ -9,6 +9,8 @@ import {
   IconButton,
   TextField,
   Button,
+  CircularProgress,
+  Collapse,
 } from "@material-ui/core";
 import {
   AccountCircleOutlined,
@@ -17,6 +19,8 @@ import {
   VisibilityOutlined,
 } from "@material-ui/icons";
 import API from "../../config/api";
+import clsx from "clsx";
+import { Alert } from "@material-ui/lab";
 const axios = require("axios");
 
 const useStyles = (theme) => ({
@@ -43,12 +47,12 @@ const useStyles = (theme) => ({
   },
   titleLogin: {
     textAlign: "center",
-    marginBottom: 50,
+    marginBottom: 30,
   },
   iconAccount: {
     display: "block",
-    width: 50,
-    height: 50,
+    width: 70,
+    height: 70,
     margin: "25px auto 10px auto",
     color: theme.palette.secondary.main,
     textAlign: "center",
@@ -69,6 +73,15 @@ const useStyles = (theme) => ({
     marginTop: 16,
     marginBottom: 16,
   },
+  buttonLoginLoadding: {
+    backgroundColor: "#e8e8e8",
+    color: "#808080",
+  },
+  circleProgress: {
+    color: "#808080",
+    width: "20px !important",
+    height: "20px !important",
+  },
 });
 
 class LoginView extends React.Component {
@@ -76,6 +89,9 @@ class LoginView extends React.Component {
     super(props);
     this.state = {
       showPassword: false,
+      loading: false,
+      diableInputs: false,
+      iserror: false,
       userName: "",
       password: "",
     };
@@ -83,13 +99,49 @@ class LoginView extends React.Component {
   }
 
   setShowPassword = (show) => this.setState({ showPassword: show });
+  setLoading = (loading) => this.setState({ loading: loading });
+  setDisableInputs = (disabled) => this.setState({ diableInputs: disabled });
+  setIsError = (iserror) => this.setState({ iserror: iserror });
+
   login = async () => {
-    axios
-      .post(API.baseURL + "login", {
-        user: this.state.userName,
-        password: this.state.password,
-      })
-      .then((response) => {});
+    this.setShowPassword(false);
+    this.setIsError(false);
+    if (this.state.userName.length > 0 && this.state.password.length > 0) {
+      this.setLoading(true);
+      this.setDisableInputs(true);
+      axios
+        .post(API.baseURL + "login", {
+          user: this.state.userName,
+          password: this.state.password,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            let data = response.data;
+            if (typeof data?.logged != "undefined" && data.logged) {
+              this.props.controlApp.setUserData({
+                username: data.username,
+                nombre: data.nombre,
+                apellido: data.apellido,
+              });
+              this.props.controlApp.historyPush("/");
+              this.props.controlApp.history.go(0);
+            } else {
+              this.setIsError(true);
+            }
+          } else {
+            this.setIsError(true);
+          }
+        })
+        .catch((error) => {
+          this.setIsError(true);
+        })
+        .then(() => {
+          this.setLoading(false);
+          this.setDisableInputs(false);
+        });
+    } else {
+      this.setIsError(true);
+    }
   };
 
   render() {
@@ -102,12 +154,19 @@ class LoginView extends React.Component {
             <Typography variant="h5" className={classes.titleLogin}>
               Iniciar sesión
             </Typography>
+            <Collapse in={this.state.iserror}>
+              <Alert severity="error">
+                <strong>Error:</strong> El usuario ó la contraseña son invalidos
+              </Alert>
+            </Collapse>
             <FormControl variant="outlined" className={classes.textField}>
               <TextField
                 type="text"
                 label="Usuario ó email"
                 variant="outlined"
+                disabled={this.state.diableInputs}
                 value={this.state.userName}
+                autoComplete="username"
                 onChange={(event) =>
                   this.setState({ userName: event.target.value })
                 }
@@ -125,7 +184,9 @@ class LoginView extends React.Component {
                 type={this.state.showPassword ? "text" : "password"}
                 label="Contraseña"
                 variant="outlined"
+                disabled={this.state.diableInputs}
                 value={this.state.password}
+                autoComplete="current-password"
                 onChange={(event) =>
                   this.setState({ password: event.target.value })
                 }
@@ -158,7 +219,17 @@ class LoginView extends React.Component {
             <Button
               variant="contained"
               color="secondary"
-              className={classes.buttonLogin}
+              disabled={this.state.diableInputs}
+              className={clsx(
+                classes.buttonLogin,
+                this.state.loading ? classes.buttonLoginLoadding : ""
+              )}
+              startIcon={
+                this.state.loading && (
+                  <CircularProgress className={classes.circleProgress} />
+                )
+              }
+              onClick={() => this.login()}
             >
               Iniciar sesión
             </Button>
