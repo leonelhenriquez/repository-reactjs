@@ -61,7 +61,7 @@ class App extends React.Component {
 
   loadUser = async () => {
     axios
-      .get(API.baseURL+"login/check")
+      .get(API.baseURL + "login/check")
       .then((response) => {
         if (response.status === 200) {
           let data = response.data;
