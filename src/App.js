@@ -6,7 +6,7 @@ import ApplicationBar from "./componets/AppBar/ApplicationBar";
 import API from "./config/api";
 import theme from "./config/theme";
 import ErrorView from "./views/ErrorView";
-import HomeView from "./views/HomeView";
+import HomeView from "./views/Home/HomeView";
 import LoadingView from "./views/LoadingView";
 import LoginView from "./views/Login/LoginView";
 
@@ -119,7 +119,10 @@ class App extends React.Component {
                 <>
                   <Switch>
                     <Route path={["/", "/home"]} exact>
-                      <HomeView controlApp={this.controlApp} />
+                      <HomeView
+                        controlApp={this.controlApp}
+                        stateApp={this.state}
+                      />
                     </Route>
                     {this.state.isLogged ? (
                       ""
