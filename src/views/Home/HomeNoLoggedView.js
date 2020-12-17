@@ -52,7 +52,7 @@ class HomeNoLoggedView extends React.Component {
               cuenta.
             </Typography>
             <div className={classes.buttonsLoginSingUp}>
-              <ButtonsLoginSingUp />
+              <ButtonsLoginSingUp controlApp={this.props.controlApp} />
             </div>
           </Grid>
           <Grid item xs={4} className={classes.grid__item}>
