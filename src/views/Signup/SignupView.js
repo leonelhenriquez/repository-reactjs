@@ -21,8 +21,14 @@ const useStyles = makeStyles((theme) => ({
   withoutLabel: {
     marginTop: theme.spacing(3),
   },
-  textField: {
+  TextField: {
+    display:"block",
     width: "25ch",
+    textAlign: "center",
+    
+  },
+  input : {
+    display:"block",
   },
 }));
 
@@ -34,16 +40,13 @@ const SignupView = () => {
     weight: "",
     weightRange: "",
     showPassword: false,
-  });
-
-  const state = {
     nombre: "",
     apellido: "",
-    password: "",
     cpassword: "",
     email: "",
     usuario: "",
-  };
+  });
+
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -59,55 +62,60 @@ const SignupView = () => {
 
   return (
     <div className={classes.root}>
-      <TextField required id="standard-required" label="Nombre" />
-      <TextField requerid id="standard-required" label="Apellidos" />
-
-      <FormControl className={clsx(classes.margin, classes.textField)}>
-        <InputLabel htmlFor="standard-adornment-password">
-          Contraseña
-        </InputLabel>
-        <Input
-          id="standard-adornment-password"
-          type={values.showPassword ? "text" : "password"}
-          value={values.password}
-          onChange={handleChange("password")}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-              >
-                {values.showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-      <FormControl className={clsx(classes.margin, classes.textField)}>
-        <InputLabel htmlFor="standard-adornment-cpassword">
-          Confirmar contraseña
-        </InputLabel>
-        <Input
-          id="standard-adornment-cpassword"
-          type={values.showPassword ? "text" : "cpassword"}
-          value={values.password}
-          onChange={handleChange("password")}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-              >
-                {values.showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-      <TextField id="standard-user" label="Usuario" />
-      <TextField id="standard-search" label="Correo electronico" type="email" />
+      <div className="EntradaDatos">
+        <TextField required id="standard-required" label="Nombre" />
+        <TextField requerid id="standard-required" label="Apellidos" />
+        <FormControl className={clsx(classes.margin, classes.textField)}>
+          <InputLabel htmlFor="standard-adornment-password">
+            Contraseña
+          </InputLabel>
+          <Input
+            id="standard-adornment-password"
+            type={values.showPassword ? "text" : "password"}
+            value={values.password}
+            onChange={handleChange("password")}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>      
+        <FormControl className={clsx(classes.margin, classes.textField)}>
+          <InputLabel htmlFor="standard-adornment-cpassword">
+            Confirmar contraseña
+          </InputLabel>
+          <Input
+            id="standard-adornment-cpassword"
+            type={values.showPassword ? "text" : "cpassword"}
+            value={values.password}
+            onChange={handleChange("password")}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        <TextField id="standard-user" label="Usuario" />
+        <TextField id="standard-search" label="Correo electronico" type="email" />
+      </div>
+      <div className="button">
+        <input type="button" value="Aceptar"/>
+        <input type="button" value="Cancelar"/>
+      </div>
     </div>
   );
 };
