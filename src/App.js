@@ -9,6 +9,7 @@ import ErrorView from "./views/ErrorView";
 import HomeView from "./views/Home/HomeView";
 import LoadingView from "./views/LoadingView";
 import LoginView from "./views/Login/LoginView";
+import SignupView from "./views/Signup/SignupView";
 
 const axios = require("axios");
 
@@ -60,31 +61,43 @@ class App extends React.Component {
   historyPush = (url) => this.props.history.push(url);
 
   loadUser = async () => {
-    axios
-      .get(API.baseURL + "login/check")
-      .then((response) => {
-        if (response.status === 200) {
-          let data = response.data;
-          if (typeof data?.logged != "undefined" && data.logged) {
-            this.setIsLogged(true);
-            this.setUserData({
-              username: data.username,
-              nombre: data.nombre,
-              apellido: data.apellido,
-            });
-          } else {
-            this.setIsLogged(false);
+    let token = localStorage.getItem("token");
+
+    console.log(token!=null);
+
+    if (token!=null) {
+      axios
+        .get(API.baseURL + "login/check")
+        .then((response) => {
+          if (response.status === 200) {
+            let data = response.data;
+            if (typeof data?.logged != "undefined" && data.logged) {
+              this.setIsLogged(true);
+              this.setUserData({
+                username: data.username,
+                nombre: data.nombre,
+                apellido: data.apellido,
+              });
+            } else {
+              this.setIsLogged(false);
+            }
           }
-        }
-      })
-      .catch((error) => {
-        this.setIsErrorLoad(true);
-      })
-      .then(() => {
-        this.setIsLoading(false);
-        this.setIsLoadingAppBar(false);
-      });
+        })
+        .catch((error) => {
+          this.setIsErrorLoad(true);
+        })
+        .then(() => {
+          this.setIsLoading(false);
+          this.setIsLoadingAppBar(false);
+        });
+    }else{
+      this.setIsLoading(false);
+      this.setIsLoading(false);
+      this.setIsLoadingAppBar(false);
+      this.setIsErrorLoad(false);
+    }
   };
+
   componentDidMount() {
     this.loadUser();
   }
@@ -127,9 +140,14 @@ class App extends React.Component {
                     {this.state.isLogged ? (
                       ""
                     ) : (
-                      <Route path="/login">
-                        <LoginView controlApp={this.controlApp} />
-                      </Route>
+                      <>
+                        <Route path="/login">
+                          <LoginView controlApp={this.controlApp} />
+                        </Route>
+                        <Route path="/signup">
+                          <SignupView controlApp={this.controlApp} />
+                        </Route>
+                      </>
                     )}
                     <Route>
                       <ErrorView controlApp={this.controlApp} />

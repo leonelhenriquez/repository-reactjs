@@ -2,7 +2,7 @@ const API = {
   baseURL:
     process.env.NODE_ENV === "production"
       ? "https://repository-server.herokuapp.com/"
-      : "http://repository.nan/",
+      : "http://localhost:8000/",
 };
 
 export default API;

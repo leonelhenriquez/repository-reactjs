@@ -1,19 +1,19 @@
-import React from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import React from "react";
+import clsx from "clsx";
+import { makeStyles } from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
   },
   margin: {
     margin: theme.spacing(1),
@@ -22,30 +22,29 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   textField: {
-    width: '25ch',
+    width: "25ch",
   },
 }));
 
-
-export default function InputAdornments() {
+const SignupView = () => {
   const classes = useStyles();
   const [values, setValues] = React.useState({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
+    amount: "",
+    password: "",
+    weight: "",
+    weightRange: "",
     showPassword: false,
   });
 
   const state = {
-    nombre:'',
-    apellido: '',
-    password: '',
-    cpassword: '',
-    email:'',
-    usuario: ''
+    nombre: "",
+    apellido: "",
+    password: "",
+    cpassword: "",
+    email: "",
+    usuario: "",
   };
-}
+
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
@@ -62,14 +61,16 @@ export default function InputAdornments() {
     <div className={classes.root}>
       <TextField required id="standard-required" label="Nombre" />
       <TextField requerid id="standard-required" label="Apellidos" />
-      
+
       <FormControl className={clsx(classes.margin, classes.textField)}>
-        <InputLabel htmlFor="standard-adornment-password">Contraseña</InputLabel>
+        <InputLabel htmlFor="standard-adornment-password">
+          Contraseña
+        </InputLabel>
         <Input
           id="standard-adornment-password"
-          type={values.showPassword ? 'text' : 'password'}
+          type={values.showPassword ? "text" : "password"}
           value={values.password}
-          onChange={handleChange('password')}
+          onChange={handleChange("password")}
           endAdornment={
             <InputAdornment position="end">
               <IconButton
@@ -84,12 +85,14 @@ export default function InputAdornments() {
         />
       </FormControl>
       <FormControl className={clsx(classes.margin, classes.textField)}>
-        <InputLabel htmlFor="standard-adornment-cpassword">Confirmar contraseña</InputLabel>
+        <InputLabel htmlFor="standard-adornment-cpassword">
+          Confirmar contraseña
+        </InputLabel>
         <Input
           id="standard-adornment-cpassword"
-          type={values.showPassword ? 'text' : 'cpassword'}
+          type={values.showPassword ? "text" : "cpassword"}
           value={values.password}
-          onChange={handleChange('password')}
+          onChange={handleChange("password")}
           endAdornment={
             <InputAdornment position="end">
               <IconButton
@@ -107,4 +110,6 @@ export default function InputAdornments() {
       <TextField id="standard-search" label="Correo electronico" type="email" />
     </div>
   );
-}
+};
+
+export default SignupView;
