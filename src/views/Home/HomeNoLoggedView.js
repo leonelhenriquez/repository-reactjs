@@ -31,11 +31,6 @@ const useStyles = (theme) => ({
 });
 
 class HomeNoLoggedView extends React.Component {
-  componentDidMount() {
-    this.props.controlApp.setShowTabMenu(true);
-    this.props.controlApp.setTabMenuPosition(0);
-  }
-
   render() {
     const { classes } = this.props;
     return (
