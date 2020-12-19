@@ -20,18 +20,25 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
   },
   margin: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(3),
   },
   withoutLabel: {
+    margin: theme.spacing(2),
     marginTop: theme.spacing(3),
   },
   TextField: {
+    paddingLeft:"100 px",
     display:"block",
-    width: "20ch",    
-  },
+    width: "20ch", 
+    margin: "50 px",
+   },
   input : {
     display:"block",
+    position:"left",
   },
+  Button : {
+    padding : "50 px",
+  }
 }));
 
 const SignupView = () => {
@@ -171,12 +178,6 @@ const SignupView = () => {
             color="primary" 
             onClick = {() => {
               validate();
-              console.log(values.nombre);
-              console.log(values.apellido);
-              console.log(values.password);
-              console.log(values.cpassword);
-              console.log(values.email);
-              console.log(values.usuario);
             }
             }
             disableElevation
