@@ -11,6 +11,8 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Collapse from '@material-ui/core/Collapse';
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,6 +48,7 @@ const SignupView = () => {
     cpassword: "",
     email: "",
     usuario: "",
+    iserror : false,
   });
 
   const handleChange = (prop) => (event) => {
@@ -60,6 +63,24 @@ const SignupView = () => {
     event.preventDefault();
   };
 
+  const validate =()=>{
+    if(values.nombre.length !== 0 && values.apellido.length !== 0){
+      if(values.password === values.cpassword){
+        if(values.usuario.length !== 0 && values.email.length !== 0){
+          setValues({...values, iserror: false});
+        }
+        else{
+          setValues({...values, iserror: true});
+        }
+      }
+      else{
+        setValues({...values, iserror: true});
+      }
+    }
+    else{
+      setValues({...values, iserror: true});
+    }
+  }
 
   return (
     <div className={classes.root}>
@@ -144,16 +165,29 @@ const SignupView = () => {
           </FormControl>
         </Grid>        
         <Grid direction="row">
-          <Button variant="contained" color="primary"  disableElevation>Cancelar</Button>          
+          <Button variant="contained" color="primary"  disableElevation>Cancelar</Button>        
           <Button 
             variant="contained" 
             color="primary" 
             onClick = {() => {
-              console.log(values);
+              validate();
+              console.log(values.nombre);
+              console.log(values.apellido);
+              console.log(values.password);
+              console.log(values.cpassword);
+              console.log(values.email);
+              console.log(values.usuario);
             }
             }
             disableElevation
           >Aceptar</Button>   
+        </Grid>
+        <Grid direction="row">
+          <Collapse in={values.iserror}>
+            <Alert severity="error">
+              <strong>Error:</strong> Todos los campos son obligatorios o revise si ha escrito mal un dato
+            </Alert>
+          </Collapse>  
         </Grid>
       </Grid>
     </div>
