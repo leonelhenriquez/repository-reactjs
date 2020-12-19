@@ -13,31 +13,49 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Collapse from '@material-ui/core/Collapse';
 import { Alert } from "@material-ui/lab";
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
+    display :'flex',
     flexWrap: "wrap",
+    minWidth: 275,
   },
   margin: {
     margin: theme.spacing(3),
   },
   withoutLabel: {
-    margin: theme.spacing(2),
-    marginTop: theme.spacing(3),
+    margin: theme.spacing(3),
+    //marginTop: theme.spacing(3),
+  },
+  FormControl : {
+    display: 'block',
   },
   TextField: {
-    paddingLeft:"100 px",
-    display:"block",
-    width: "20ch", 
-    margin: "50 px",
+    margin: theme.spacing(2),
+    textalign: 'center',
    },
-  input : {
-    display:"block",
-    position:"left",
-  },
   Button : {
-    padding : "50 px",
+    display : 'inline-block',
+    width : "50ch",
+    margin:theme.spacing(1),
+    margin: "auto",
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    width: "100%",
+
+  },
+  Card :{
+    width: "100%",
+    maxWidth: 600,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    margin: "auto",
+  },
+  Grid : {
+    display :'grid',
   }
 }));
 
@@ -91,106 +109,108 @@ const SignupView = () => {
 
   return (
     <div className={classes.root}>
-      <Grid container direction="column" justify="center" alignItems="center">
-        <Grid direcrtiom="row">
-          <TextField 
-            name="nombre" 
-            required id="standard-required"  
-            label="Nombre" 
-            onChange={(event) =>
-              setValues({...values, nombre: event.target.value })
-             }
-          />
-          <TextField 
-            requerid id="standard-required" 
-            label="Apellidos" 
-            onChange={(event) =>
-              setValues({...values, apellido: event.target.value })
-             }/>
-        </Grid>      
-        <Grid direction ="row">
-          <TextField 
-            id="standard-user" 
-            label="Usuario" 
-            onChange={(event) =>
-              setValues({...values, usuario: event.target.value })
-             }/>
-          <TextField 
-            id="standard-search" 
-            label="Correo electronico" 
-            type="email" 
-            onChange={(event) =>
-              setValues({...values, email: event.target.value })
-             }/>
-        </Grid>
-        <Grid direction="row">
-          <FormControl  className={clsx(classes.margin, classes.withoutLabel, classes.textField)}>
-            <InputLabel htmlFor="standard-adornment-password">Contraseña</InputLabel>
-            <Input
-              id="standard-adornment-password"
-              type={values.showPassword ? "text" : "password"}
-              value={values.password}
-              onChange ={
-                handleChange("password"),
-                (event) => setValues({...values, password: event.target.value })
-              }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
+      <Card className={classes.root, classes.Card}>
+        <CardContent>
+          <Grid container="row">
+            <TextField 
+              name="nombre"              
+              className ={classes.TextField}
+              required id="standard-required"  
+              label="Nombres" 
+              onChange={(event) =>
+                setValues({...values, nombre: event.target.value })
+                }
             />
-          </FormControl>      
-          <FormControl  className={clsx(classes.margin, classes.withoutLabel, classes.textField)}>
-            <InputLabel htmlFor="standard-adornment-password">Confirmar contraseña</InputLabel>
-            <Input
-              id="standard-adornment-cpassword"
-              type={values.showPassword ? "text" : "password"}
-              value={values.cpassword}
-              onChange={
-                handleChange("password"),
-                (event) => setValues({...values, cpassword: event.target.value })
+            <TextField 
+              requerid id="standard-required"              
+              className ={classes.TextField}
+              label="Apellidos" 
+              onChange={(event) =>
+                setValues({...values, apellido: event.target.value })
+                }/>
+          </Grid>
+          <Grid container="row" className={classes.Grid}>
+            <TextField 
+              id="standard-user"             
+              className ={classes.TextField}
+              label="Usuario" 
+              onChange={(event) =>
+                setValues({...values, usuario: event.target.value })
+                }/>
+            <TextField 
+              id="standard-search"             
+              className ={classes.TextField}
+              label="Correo electronico" 
+              type="email" 
+              onChange={(event) =>
+                setValues({...values, email: event.target.value })
+                }/>
+            </Grid>
+            <Grid container="row">
+              <FormControl  className={clsx(classes.margin, classes.withoutLabel, classes.FormControl)}>
+                <InputLabel htmlFor="standard-adornment-password">Contraseña</InputLabel>
+                <Input
+                  className ={classes.Input}
+                  id="standard-adornment-password"
+                  type={values.showPassword ? "text" : "password"}
+                  value={values.password}
+                  onChange ={
+                    handleChange("password"),
+                    (event) => setValues({...values, password: event.target.value })
+                  }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>      
+              <FormControl  className={clsx(classes.margin, classes.withoutLabel, classes.textField)}>
+                <InputLabel htmlFor="standard-adornment-password">Confirmar contraseña</InputLabel>
+                <Input
+                  id="standard-adornment-cpassword"
+                  type={values.showPassword ? "text" : "password"}
+                  value={values.cpassword}
+                  onChange={
+                    handleChange("password"),
+                    (event) => setValues({...values, cpassword: event.target.value })
+                  }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Grid>
+            <Button 
+              variant="contained" 
+              color="primary" 
+              className={classes.Button}
+              onClick = {() => {
+                validate();
               }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
               }
-            />
-          </FormControl>
-        </Grid>        
-        <Grid direction="row">
-          <Button variant="contained" color="primary"  disableElevation>Cancelar</Button>        
-          <Button 
-            variant="contained" 
-            color="primary" 
-            onClick = {() => {
-              validate();
-            }
-            }
-            disableElevation
-          >Aceptar</Button>   
-        </Grid>
-        <Grid direction="row">
-          <Collapse in={values.iserror}>
-            <Alert severity="error">
-              <strong>Error:</strong> Todos los campos son obligatorios o revise si ha escrito mal un dato
-            </Alert>
-          </Collapse>  
-        </Grid>
-      </Grid>
+              disableElevation>Aceptar</Button>  
+          </CardContent>
+      </Card>   
+        <Collapse in={values.iserror}>
+          <Alert severity="error">
+            <strong>Error:</strong> Todos los campos son obligatorios o revise si ha escrito mal un dato
+          </Alert>
+        </Collapse>  
     </div>
   );
 };
