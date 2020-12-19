@@ -97,7 +97,7 @@ class LoginView extends React.Component {
     };
     this.props.controlApp.setShowTabMenu(false);
   }
-
+  
   setShowPassword = (show) => this.setState({ showPassword: show });
   setLoading = (loading) => this.setState({ loading: loading });
   setDisableInputs = (disabled) => this.setState({ diableInputs: disabled });

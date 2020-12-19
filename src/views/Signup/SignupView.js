@@ -36,17 +36,17 @@ const SignupView = () => {
   const classes = useStyles();
   const [values, setValues] = React.useState({
     amount: "",
-    password: "",
     weight: "",
     weightRange: "",
     showPassword: false,
+    showCPassword: false,
     nombre: "",
     apellido: "",
+    password: "",
     cpassword: "",
     email: "",
     usuario: "",
   });
-
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -60,16 +60,40 @@ const SignupView = () => {
     event.preventDefault();
   };
 
+
   return (
     <div className={classes.root}>
       <Grid container direction="column" justify="center" alignItems="center">
         <Grid direcrtiom="row">
-          <TextField required id="standard-required" label="Nombre" />
-          <TextField requerid id="standard-required" label="Apellidos" />
+          <TextField 
+            name="nombre" 
+            required id="standard-required"  
+            label="Nombre" 
+            onChange={(event) =>
+              setValues({...values, nombre: event.target.value })
+             }
+          />
+          <TextField 
+            requerid id="standard-required" 
+            label="Apellidos" 
+            onChange={(event) =>
+              setValues({...values, apellido: event.target.value })
+             }/>
         </Grid>      
         <Grid direction ="row">
-          <TextField id="standard-user" label="Usuario" />
-          <TextField id="standard-search" label="Correo electronico" type="email" />
+          <TextField 
+            id="standard-user" 
+            label="Usuario" 
+            onChange={(event) =>
+              setValues({...values, usuario: event.target.value })
+             }/>
+          <TextField 
+            id="standard-search" 
+            label="Correo electronico" 
+            type="email" 
+            onChange={(event) =>
+              setValues({...values, email: event.target.value })
+             }/>
         </Grid>
         <Grid direction="row">
           <FormControl  className={clsx(classes.margin, classes.withoutLabel, classes.textField)}>
@@ -78,7 +102,10 @@ const SignupView = () => {
               id="standard-adornment-password"
               type={values.showPassword ? "text" : "password"}
               value={values.password}
-              onChange={handleChange("password")}
+              onChange ={
+                handleChange("password"),
+                (event) => setValues({...values, password: event.target.value })
+              }
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -96,9 +123,12 @@ const SignupView = () => {
             <InputLabel htmlFor="standard-adornment-password">Confirmar contraseña</InputLabel>
             <Input
               id="standard-adornment-cpassword"
-              type={values.showPassword ? "text" : "cpassword"}
+              type={values.showPassword ? "text" : "password"}
               value={values.cpassword}
-              onChange={handleChange("cpassword")}
+              onChange={
+                handleChange("password"),
+                (event) => setValues({...values, cpassword: event.target.value })
+              }
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -114,8 +144,16 @@ const SignupView = () => {
           </FormControl>
         </Grid>        
         <Grid direction="row">
-          <Button variant="contained" color="primary" disableElevation>Cancelar</Button>          
-          <Button variant="contained" color="primary" disableElevation>Aceptar</Button>   
+          <Button variant="contained" color="primary"  disableElevation>Cancelar</Button>          
+          <Button 
+            variant="contained" 
+            color="primary" 
+            onClick = {() => {
+              console.log(values);
+            }
+            }
+            disableElevation
+          >Aceptar</Button>   
         </Grid>
       </Grid>
     </div>
