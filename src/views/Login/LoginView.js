@@ -92,12 +92,12 @@ class LoginView extends React.Component {
       loading: false,
       diableInputs: false,
       iserror: false,
-      userName: "",
+      email: "",
       password: "",
     };
     this.props.controlApp.setShowTabMenu(false);
   }
-  
+
   setShowPassword = (show) => this.setState({ showPassword: show });
   setLoading = (loading) => this.setState({ loading: loading });
   setDisableInputs = (disabled) => this.setState({ diableInputs: disabled });
@@ -106,25 +106,26 @@ class LoginView extends React.Component {
   login = async () => {
     this.setShowPassword(false);
     this.setIsError(false);
-    if (this.state.userName.length > 0 && this.state.password.length > 0) {
+    if (this.state.email.length > 0 && this.state.password.length > 0) {
       this.setLoading(true);
       this.setDisableInputs(true);
-      axios
-        .post(API.baseURL + "login", {
-          user: this.state.userName,
+      axios({
+        method: "POST",
+        url: API.baseURL + "rest-auth/login/",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          email: this.state.email,
           password: this.state.password,
-        })
+        },
+      })
         .then((response) => {
           if (response.status === 200) {
             let data = response.data;
-            if (typeof data?.logged != "undefined" && data.logged) {
-              this.props.controlApp.setUserData({
-                username: data.username,
-                nombre: data.nombre,
-                apellido: data.apellido,
-              });
-              this.props.controlApp.historyPush("/");
-              this.props.controlApp.history.go(0);
+            if (typeof data?.key != "undefined") {
+              localStorage.setItem("token", data.key);
+              this.resetView();
             } else {
               this.setIsError(true);
             }
@@ -144,6 +145,15 @@ class LoginView extends React.Component {
     }
   };
 
+  resetView = () => {
+    this.props.controlApp.setIsLoadingAppBar(true);
+    this.props.controlApp.setIsLoading(true);
+    setTimeout(() => {
+      this.props.controlApp.historyPush("/home");
+      this.props.controlApp.history.go(0);
+    }, 100);
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -156,19 +166,20 @@ class LoginView extends React.Component {
             </Typography>
             <Collapse in={this.state.iserror}>
               <Alert severity="error">
-                <strong>Error:</strong> El usuario ó la contraseña son invalidos
+                <strong>Error:</strong> El correo electronico ó la contraseña
+                son invalidos
               </Alert>
             </Collapse>
             <FormControl variant="outlined" className={classes.textField}>
               <TextField
                 type="text"
-                label="Usuario ó email"
+                label="Correo electronico"
                 variant="outlined"
                 disabled={this.state.diableInputs}
                 value={this.state.userName}
                 autoComplete="username"
                 onChange={(event) =>
-                  this.setState({ userName: event.target.value })
+                  this.setState({ email: event.target.value })
                 }
                 InputProps={{
                   startAdornment: (

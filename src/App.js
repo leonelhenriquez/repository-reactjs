@@ -9,6 +9,7 @@ import ErrorView from "./views/ErrorView";
 import HomeView from "./views/Home/HomeView";
 import LoadingView from "./views/LoadingView";
 import LoginView from "./views/Login/LoginView";
+import SignoffView from "./views/Signoff/Signoff";
 import SignupView from "./views/Signup/SignupView";
 
 const axios = require("axios");
@@ -63,15 +64,17 @@ class App extends React.Component {
   loadUser = async () => {
     let token = localStorage.getItem("token");
 
-    console.log(token!=null);
-
-    if (token!=null) {
+    if (token != null) {
       axios
-        .get(API.baseURL + "login/check")
+        .get(API.baseURL + "rest-auth/user/", {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
         .then((response) => {
           if (response.status === 200) {
             let data = response.data;
-            if (typeof data?.logged != "undefined" && data.logged) {
+            if (typeof data?.username != "undefined") {
               this.setIsLogged(true);
               this.setUserData({
                 username: data.username,
@@ -84,13 +87,13 @@ class App extends React.Component {
           }
         })
         .catch((error) => {
-          this.setIsErrorLoad(true);
+          //this.setIsErrorLoad(true);
         })
         .then(() => {
           this.setIsLoading(false);
           this.setIsLoadingAppBar(false);
         });
-    }else{
+    } else {
       this.setIsLoading(false);
       this.setIsLoading(false);
       this.setIsLoadingAppBar(false);
@@ -138,7 +141,11 @@ class App extends React.Component {
                       />
                     </Route>
                     {this.state.isLogged ? (
-                      ""
+                      <>
+                        <Route path="/signoff">
+                          <SignoffView controlApp={this.controlApp} />
+                        </Route>
+                      </>
                     ) : (
                       <>
                         <Route path="/login">

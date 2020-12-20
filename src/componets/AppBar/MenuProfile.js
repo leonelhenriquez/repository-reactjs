@@ -24,6 +24,12 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     fontWeight: 600,
   },
+  txtUserName: {
+    maxWidth: 120,
+    whiteSpacepace: "nowrap",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+  },
 }));
 
 const StyledMenu = withStyles({
@@ -91,7 +97,9 @@ const MenuProfile = (props) => {
             </>
           }
         >
-          {props.stateApp.userData.nombre}
+          <div className={classes.txtUserName}>
+            {"@" + props.stateApp.userData.username}
+          </div>
         </Button>
       </Fade>
       <StyledMenu
