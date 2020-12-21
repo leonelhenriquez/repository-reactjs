@@ -1,5 +1,5 @@
-import { useHistory } from "react-router-dom";
 import App from "./App";
+import { useHistory } from "react-router-dom";
 
 const MainApp = () => {
   const history = useHistory();
