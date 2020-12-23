@@ -11,6 +11,7 @@ import LoadingView from "./views/LoadingView";
 import LoginView from "./views/Login/LoginView";
 import SignoffView from "./views/Signoff/Signoff";
 import SignupView from "./views/Signup/SignupView";
+import ProfileView from "./views/Profile/ProfileView";
 
 const axios = require("axios");
 
@@ -144,6 +145,12 @@ class App extends React.Component {
                       <>
                         <Route path="/signoff">
                           <SignoffView controlApp={this.controlApp} />
+                        </Route>
+                        <Route path="/profile">
+                          <ProfileView
+                            controlApp={this.controlApp}
+                            stateApp={this.state}
+                          />
                         </Route>
                       </>
                     ) : (
