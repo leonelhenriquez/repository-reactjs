@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Fade, makeStyles } from "@material-ui/core";
+import { Button, ButtonGroup, Fade, makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   buttons: {
     marginLeft: theme.spacing(2),
@@ -12,25 +12,24 @@ const ButtonsLoginSingUp = (props) => {
   return (
     <>
       <Fade in={true}>
-        <Button
-          variant={"outlined"}
-          color={"secondary"}
-          className={classes.buttons}
-          onClick={() => props.controlApp.historyPush("/login")}
-        >
-          Iniciar sesión
-        </Button>
-      </Fade>
-
-      <Fade in={true}>
-        <Button
-          variant={"outlined"}
-          color={"secondary"}
-          className={classes.buttons}
-          onClick={() => props.controlApp.historyPush("/signup")}
-        >
-          Registrarme
-        </Button>
+        <ButtonGroup>
+          <Button
+            variant={"outlined"}
+            color={"secondary"}
+            className={classes.buttons}
+            onClick={() => props.controlApp.historyPush("/login")}
+          >
+            Iniciar sesión
+          </Button>
+          <Button
+            variant={"outlined"}
+            color={"secondary"}
+            className={classes.buttons}
+            onClick={() => props.controlApp.historyPush("/signup")}
+          >
+            Registrarme
+          </Button>
+        </ButtonGroup>
       </Fade>
     </>
   );

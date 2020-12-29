@@ -1,239 +1,408 @@
 import React from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Collapse from "@material-ui/core/Collapse";
+import {
+  Typography,
+  Card,
+  CardContent,
+  FormControl,
+  Grid,
+  InputAdornment,
+  TextField,
+  Button,
+  CircularProgress,
+  Collapse,
+  withStyles,
+} from "@material-ui/core";
+import {
+  AlternateEmailOutlined,
+  EmailOutlined,
+  LockOutlined,
+} from "@material-ui/icons";
 import { Alert } from "@material-ui/lab";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import { validateEmail, validatePassword } from "../../utils/Validator";
+import API from "../../config/api";
+const axios = require("axios");
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    minWidth: 275,
+const useStyles = (theme) => ({
+  rootSignupView: {
+    padding: "40px 20px 20px 20px",
+    boxSizing: "border-box",
+    position: "absolute",
+    top: 117,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: "100%",
+    boxShadow: "inset 0px 250px 0 #4771f4",
   },
-  margin: {
-    margin: theme.spacing(3),
+  titleSignup: {
+    marginTop: 20,
+    marginBottom: 30,
+    fontWeight: 500,
   },
-  withoutLabel: {
-    margin: theme.spacing(3),
-    //marginTop: theme.spacing(3),
+  textField: {
+    width: "100%",
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
-  FormControl: {
-    display: "block",
-  },
-  TextField: {
-    margin: theme.spacing(2),
-    textalign: "center",
-  },
-  Button: {
-    display: "inline-block",
-    width: "50ch",
-    margin: theme.spacing(1),
+  button: {
     margin: "auto",
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
     width: "100%",
+    fontWeight: "bold",
   },
-  Card: {
+  buttonLoading: {
+    backgroundColor: "#e8e8e8",
+    color: "#808080",
+  },
+  signupCard: {
     width: "100%",
-    maxWidth: 600,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
+    maxWidth: 800,
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
     margin: "auto",
   },
-  Grid: {
-    display: "grid",
+  circleProgress: {
+    color: "#808080",
+    width: "20px !important",
+    height: "20px !important",
   },
-}));
+});
 
-const SignupView = () => {
-  const classes = useStyles();
-  const [values, setValues] = React.useState({
-    amount: "",
-    weight: "",
-    weightRange: "",
-    showPassword: false,
-    showCPassword: false,
-    nombre: "",
-    apellido: "",
-    password: "",
-    cpassword: "",
-    email: "",
-    usuario: "",
-    iserror: false,
-  });
+class SignupView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      firstName: "",
+      lastName: "",
+      email: "",
+      username: "",
+      password: "",
+      repeat_password: "",
+      iserror: false,
+      disabledInputs: false,
+      disableButton: true,
+      loading: false,
+      errorMessage: {
+        firstName: "",
+        lastName: "",
+        username: "",
+        email: "",
+        password: "",
+        repeatPassword: "",
+      },
+    };
+  }
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  setErrorMessage = (key, msg) => {
+    this.setState({
+      errorMessage: {
+        ...this.state.errorMessage,
+        [key]: msg,
+      },
+    });
   };
 
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
+  resetErrorMessage = () => {
+    this.setState({
+      errorMessage: {
+        firstName: "",
+        lastName: "",
+        username: "",
+        email: "",
+        password: "",
+        repeatPassword: "",
+      },
+    });
   };
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  getUser = () => {
+    return {
+      username: this.state.username,
+      email: this.state.email.trim(),
+      first_name: this.state.firstName.trim(),
+      last_name: this.state.lastName.trim(),
+      password1: this.state.password,
+      password2: this.state.repeat_password,
+    };
   };
 
-  const validate = () => {
-    if (values.nombre.length !== 0 && values.apellido.length !== 0) {
-      if (values.password === values.cpassword) {
-        if (values.usuario.length !== 0 && values.email.length !== 0) {
-          setValues({ ...values, iserror: false });
-        } else {
-          setValues({ ...values, iserror: true });
-        }
-      } else {
-        setValues({ ...values, iserror: true });
-      }
-    } else {
-      setValues({ ...values, iserror: true });
+  registerUser = async () => {
+    this.setState({ loading: true });
+    this.resetErrorMessage();
+    let user = this.getUser();
+
+    if (this.validarUsuario()) {
+      axios({
+        method: "POST",
+        url: API.baseURL + "rest-auth/registration/",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: user,
+      })
+        .then((response) => {
+          let data = response.data;
+
+          if (typeof data.key != "undefined") {
+            localStorage.setItem("token", data.key);
+            this.resetView();
+          }
+        })
+        .catch((err) => {
+          let data = err.response.data;
+
+          if (typeof data.first_name != "undefined") {
+            this.setErrorMessage("firstName", data.first_name);
+          }
+
+          if (typeof data.last_name != "undefined") {
+            this.setErrorMessage("lastName", data.last_name);
+          }
+
+          if (typeof data.username != "undefined") {
+            this.setErrorMessage("username", data.username);
+          }
+
+          if (typeof data.email != "undefined") {
+            this.setErrorMessage("email", data.email);
+          }
+
+          if (typeof data.password1 != "undefined") {
+            this.setErrorMessage("password", data.password1);
+          }
+
+          if (typeof data.password2 != "undefined") {
+            this.setErrorMessage("repeatPassword", data.password2);
+          }
+        })
+        .then(() => this.setState({ loading: false }));
     }
   };
 
-  return (
-    <div className={classes.root}>
-      <Card className={(classes.root, classes.Card)}>
-        <CardContent>
-          <Grid container="row">
-            <TextField
-              name="nombre"
-              className={classes.TextField}
-              required
-              id="standard-required"
-              label="Nombres"
-              onChange={(event) =>
-                setValues({ ...values, nombre: event.target.value })
-              }
-            />
-            <TextField
-              requerid
-              id="standard-required"
-              className={classes.TextField}
-              label="Apellidos"
-              onChange={(event) =>
-                setValues({ ...values, apellido: event.target.value })
-              }
-            />
-          </Grid>
-          <Grid container="row" className={classes.Grid}>
-            <TextField
-              id="standard-user"
-              className={classes.TextField}
-              label="Usuario"
-              onChange={(event) =>
-                setValues({ ...values, usuario: event.target.value })
-              }
-            />
-            <TextField
-              id="standard-search"
-              className={classes.TextField}
-              label="Correo electronico"
-              type="email"
-              onChange={(event) =>
-                setValues({ ...values, email: event.target.value })
-              }
-            />
-          </Grid>
-          <Grid container="row">
-            <FormControl
-              className={clsx(
-                classes.margin,
-                classes.withoutLabel,
-                classes.FormControl
-              )}
-            >
-              <InputLabel htmlFor="standard-adornment-password">
-                Contraseña
-              </InputLabel>
-              <Input
-                className={classes.Input}
-                id="standard-adornment-password"
-                type={values.showPassword ? "text" : "password"}
-                value={values.password}
-                onChange={
-                  (handleChange("password"),
-                  (event) =>
-                    setValues({ ...values, password: event.target.value }))
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControl
-              className={clsx(
-                classes.margin,
-                classes.withoutLabel,
-                classes.textField
-              )}
-            >
-              <InputLabel htmlFor="standard-adornment-password">
-                Confirmar contraseña
-              </InputLabel>
-              <Input
-                id="standard-adornment-cpassword"
-                type={values.showPassword ? "text" : "password"}
-                value={values.cpassword}
-                onChange={
-                  (handleChange("password"),
-                  (event) =>
-                    setValues({ ...values, cpassword: event.target.value }))
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </Grid>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.Button}
-            onClick={() => {
-              validate();
-            }}
-            disableElevation
-          >
-            Aceptar
-          </Button>
-        </CardContent>
-      </Card>
-      <Collapse in={values.iserror}>
-        <Alert severity="error">
-          <strong>Error:</strong> Todos los campos son obligatorios o revise si
-          ha escrito mal un dato
-        </Alert>
-      </Collapse>
-    </div>
-  );
-};
+  resetView = () => {
+    this.props.controlApp.setIsLoadingAppBar(true);
+    this.props.controlApp.setIsLoading(true);
+    setTimeout(() => {
+      this.props.controlApp.historyPush("/home");
+      this.props.controlApp.history.go(0);
+    }, 100);
+  };
 
-export default SignupView;
+  validarUsuario = () => {
+    let user = this.getUser();
+    return (
+      user.username.length > 0 &&
+      validateEmail(user.email) &&
+      user.first_name.length > 0 &&
+      user.last_name.length > 0 &&
+      validatePassword(user.password1) &&
+      user.password1 === user.password2
+    );
+  };
+
+  checkInputs = () => {
+    setTimeout(
+      () => this.setState({ disableButton: !this.validarUsuario() }),
+      10
+    );
+  };
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.rootSignupView}>
+        <Card className={classes.signupCard} elevation={4}>
+          <CardContent>
+            <Typography variant="h4" className={classes.titleSignup}>
+              Registrate
+            </Typography>
+            <Collapse in={this.state.iserror}>
+              <Alert severity="error">
+                <strong>Error</strong> Los datos ingresados son incorrectos.
+              </Alert>
+            </Collapse>
+            <Grid container spacing={6}>
+              <Grid item xs={6}>
+                <FormControl variant="outlined" className={classes.textField}>
+                  <TextField
+                    type="text"
+                    label="Nombres"
+                    variant="outlined"
+                    disabled={this.state.disabledInputs}
+                    value={this.state.firstName}
+                    error={this.state.errorMessage.firstName.length > 0}
+                    helperText={this.state.errorMessage.firstName}
+                    onChange={(event) => {
+                      this.setState({ firstName: event.target.value });
+                      this.checkInputs();
+                    }}
+                    required
+                  />
+                </FormControl>
+                <FormControl variant="outlined" className={classes.textField}>
+                  <TextField
+                    type="text"
+                    label="Apellidos"
+                    variant="outlined"
+                    disabled={this.state.disabledInputs}
+                    value={this.state.apellidos}
+                    error={this.state.errorMessage.lastName.length > 0}
+                    helperText={this.state.errorMessage.lastName}
+                    onChange={(event) => {
+                      this.setState({ lastName: event.target.value });
+                      this.checkInputs();
+                    }}
+                    required
+                  />
+                </FormControl>
+                <FormControl variant="outlined" className={classes.textField}>
+                  <TextField
+                    type="text"
+                    label="Usuario"
+                    variant="outlined"
+                    disabled={this.state.disabledInputs}
+                    value={this.state.username}
+                    error={this.state.errorMessage.username.length > 0}
+                    helperText={this.state.errorMessage.username}
+                    onChange={(event) => {
+                      this.setState({ username: event.target.value });
+                      this.checkInputs();
+                    }}
+                    required
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment>
+                          <AlternateEmailOutlined />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl variant="outlined" className={classes.textField}>
+                  <TextField
+                    type="email"
+                    label="Correo electronico"
+                    variant="outlined"
+                    disabled={this.state.disabledInputs}
+                    value={this.state.email}
+                    error={this.state.errorMessage.email.length > 0}
+                    helperText={this.state.errorMessage.email}
+                    onChange={(event) => {
+                      this.setState({ email: event.target.value });
+                      this.setErrorMessage(
+                        "email",
+                        !validateEmail(event.target.value)
+                          ? "El correo electronico es invalido"
+                          : ""
+                      );
+                      this.checkInputs();
+                    }}
+                    required
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment>
+                          <EmailOutlined />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </FormControl>
+                <FormControl variant="outlined" className={classes.textField}>
+                  <TextField
+                    type="password"
+                    label="Contraseña"
+                    variant="outlined"
+                    disabled={this.state.disabledInputs}
+                    value={this.state.password}
+                    autoComplete="new-password"
+                    error={this.state.errorMessage.password.length > 0}
+                    helperText={this.state.errorMessage.repeatPassword}
+                    onChange={(event) => {
+                      this.setState({ password: event.target.value });
+                      this.setErrorMessage(
+                        "password",
+                        !validatePassword(event.target.value)
+                          ? "La contraseña debe tener almenos 8 caracteres, 2 letras y 2 numeros."
+                          : ""
+                      );
+                      if (this.state.repeat_password.length > 0) {
+                        this.setErrorMessage(
+                          "repeatPassword",
+                          event.target.value !== this.state.repeat_password
+                            ? "Las contraseñas no coindicen"
+                            : ""
+                        );
+                      }
+                      this.checkInputs();
+                    }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment>
+                          <LockOutlined />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </FormControl>
+                <FormControl variant="outlined" className={classes.textField}>
+                  <TextField
+                    type="password"
+                    label="Repetir contraseña"
+                    variant="outlined"
+                    disabled={this.state.disabledInputs}
+                    value={this.state.repeat_password}
+                    autoComplete="new-password"
+                    error={this.state.errorMessage.repeatPassword.length > 0}
+                    helperText={this.state.errorMessage.repeatPassword}
+                    onChange={(event) => {
+                      this.setState({ repeat_password: event.target.value });
+                      this.setErrorMessage(
+                        "repeatPassword",
+                        event.target.value !== this.state.password
+                          ? "Las contraseñas no coindicen"
+                          : ""
+                      );
+                      this.checkInputs();
+                    }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment>
+                          <LockOutlined />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </FormControl>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  className={clsx(
+                    classes.button,
+                    this.state.loading ? classes.buttonLoading : ""
+                  )}
+                  disabled={
+                    this.state.disableButton || this.state.disabledInputs
+                  }
+                  onClick={() => this.registerUser()}
+                  startIcon={
+                    this.state.loading && (
+                      <CircularProgress className={classes.circleProgress} />
+                    )
+                  }
+                >
+                  Registrarme
+                </Button>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+}
+
+export default withStyles(useStyles)(SignupView);

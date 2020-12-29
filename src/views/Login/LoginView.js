@@ -25,17 +25,14 @@ const axios = require("axios");
 
 const useStyles = (theme) => ({
   rootLoginView: {
-    padding: "40px 20px 200px 20px",
+    padding: "40px 20px 20px 20px",
     boxSizing: "border-box",
     position: "absolute",
     top: 117,
     bottom: 0,
     left: 0,
     right: 0,
-    margin: "auto",
-    display: "flex",
     width: "100%",
-    overflow: "auto",
     boxShadow: "inset 0px 250px 0 #4771f4",
   },
   loginCard: {
