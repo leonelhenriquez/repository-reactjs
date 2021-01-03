@@ -39,7 +39,7 @@ class ProfileView extends React.Component {
     this.state={
       userName : props.stateApp.userData.username,
       email : props.stateApp.userData.email,
-      name : props.stateApp.userData.name,
+      name : props.stateApp.userData.nombre,
       lastname : props.stateApp.userData.apellido,
     };
   }
@@ -56,7 +56,7 @@ class ProfileView extends React.Component {
             <Grid item xs={12}>
               <Grid container spacing={4}>
                 <Grid item>
-                  <Avatar className = {classes.large}alt ="Remy Sharp" src="../../../logo/repositroy2.svg"/>
+                  <Avatar className = {classes.large} alt={this.state.name} src="../../../logo/repositroy2.svg"/>
                 </Grid>
                 <Grid item>
                   <Typography variant="h5" component="h2">@{this.state.userName}</Typography>
