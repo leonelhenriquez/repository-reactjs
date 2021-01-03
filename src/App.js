@@ -35,6 +35,7 @@ class App extends React.Component {
         username: "",
         nombre: "",
         apellido: "",
+        email:"",
       },
     };
 
@@ -81,6 +82,7 @@ class App extends React.Component {
                 username: data.username,
                 nombre: data.nombre,
                 apellido: data.apellido,
+                email: data.email,
               });
             } else {
               this.setIsLogged(false);
