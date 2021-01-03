@@ -13,7 +13,7 @@ import {
 
 const useStyles = (theme)=>({
   root: {
-    minWidth: 275,
+    minWidth: 275,    
   },
   bullet: {
     display: 'inline-block',
@@ -29,6 +29,15 @@ const useStyles = (theme)=>({
   large: {
     width: theme.spacing(9),
     height: theme.spacing(9),
+  },
+  card:{
+    display: "inline-grid",
+    boxShadow: "1.4 1.4 #182026",
+    "&:hover": {
+      boxShadow: "1 1 #182026"
+    },
+    margin: "1em 0",
+    marginRight: "1em"
   },
 });
 
@@ -50,8 +59,8 @@ class ProfileView extends React.Component {
 
     return <div>
       <Grid container spacing={1}>
-        <Grid item>
-          <Card className={classes.root}>
+        <Grid item >
+          <Card className={classes.card}>
             <CardContent>    
             <Grid item xs={12}>
               <Grid container spacing={4}>
@@ -73,7 +82,7 @@ class ProfileView extends React.Component {
         </Grid>
 
         <Grid item>
-          <Card className={classes.root}>
+          <Card className={classes.card}>
             <CardContent>
               <Typography className={classes.title} color="textSecondary" gutterBottom>
                 Mi perfil
