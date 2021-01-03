@@ -79,18 +79,10 @@ class ProfileView extends React.Component {
                 Mi perfil
               </Typography>
               <Typography variant="h5" component="h2">{this.state.name} {this.state.lastname}</Typography>
-              <Typography className={classes.pos} color="textSecondary">
-                adjective
-              </Typography>
-              <Typography variant="body2" component="p">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-              </Typography>
+              <Typography variant="body2" component="p">Favoritos: </Typography>
+              <Typography variant="body2" component="p">Mis recursos: </Typography>
+              <Typography variant="body2" component="p">Ver mas tarde: </Typography>
             </CardContent>
-            <CardActions>
-              <Button size="small">Learn More</Button>
-            </CardActions>
           </Card>
         </Grid>
       </Grid>
