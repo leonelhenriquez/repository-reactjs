@@ -80,8 +80,8 @@ class App extends React.Component {
               this.setIsLogged(true);
               this.setUserData({
                 username: data.username,
-                nombre: data.nombre,
-                apellido: data.apellido,
+                nombre: data.first_name,
+                apellido: data.last_name,
                 email: data.email,
               });
             } else {
@@ -137,8 +137,14 @@ class App extends React.Component {
               ) : (
                 <>
                   <Switch>
-                    <Route path={["/", "/home"]} exact>
-                      <HomeView
+                    <Route
+                      path={
+                        this.state.isLogged
+                          ? ["/", "/home", "/resources"]
+                          : ["/", "/home"]
+                      }
+                      exact
+                    >                      <HomeView
                         controlApp={this.controlApp}
                         stateApp={this.state}
                       />
