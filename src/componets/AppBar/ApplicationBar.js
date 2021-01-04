@@ -1,13 +1,11 @@
 import React from "react";
 import {
   AppBar,
-  fade,
   Fade,
   IconButton,
   Tab,
   Tabs,
   Toolbar,
-  makeStyles,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import logo from "./../../logotipo.svg";

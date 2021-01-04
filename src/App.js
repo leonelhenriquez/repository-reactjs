@@ -12,6 +12,7 @@ import LoginView from "./views/Login/LoginView";
 import SignoffView from "./views/Signoff/Signoff";
 import SignupView from "./views/Signup/SignupView";
 import ProfileView from "./views/Profile/ProfileView";
+import ResourceView from "./views/ResourceView/ResourceView";
 
 const axios = require("axios");
 
@@ -35,7 +36,7 @@ class App extends React.Component {
         username: "",
         nombre: "",
         apellido: "",
-        email:"",
+        email: "",
       },
     };
 
@@ -144,7 +145,8 @@ class App extends React.Component {
                           : ["/", "/home"]
                       }
                       exact
-                    >                      <HomeView
+                    >
+                      <HomeView
                         controlApp={this.controlApp}
                         stateApp={this.state}
                       />
@@ -159,6 +161,9 @@ class App extends React.Component {
                             controlApp={this.controlApp}
                             stateApp={this.state}
                           />
+                        </Route>
+                        <Route path="/resource/:resourceId">
+                          <ResourceView controlApp={this.controlApp} />
                         </Route>
                       </>
                     ) : (

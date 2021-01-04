@@ -4,7 +4,7 @@ const API = {
   baseURL:
     SERVER_API === "production"
       ? "https://api.repository.studio/"
-      : "http://localhost:8000/",
+      : "https://api.repository.studio/",
 };
 
 export default API;

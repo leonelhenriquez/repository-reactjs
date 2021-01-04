@@ -57,14 +57,14 @@ const AppBarStyles = makeStyles((theme) => ({
   },
   toolbar: {
     width: "100%",
-    maxWidth: "1100px",
+    maxWidth: "1280px",
     margin: "0 auto",
     paddingTop: 40,
     paddingBottom: 40,
   },
   toolbarLogin: {
     width: "100%",
-    maxWidth: "1100px",
+    maxWidth: "1280px",
     margin: "0 auto",
     paddingTop: 0,
     paddingBottom: 0,
