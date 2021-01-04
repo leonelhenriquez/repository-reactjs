@@ -1,9 +1,9 @@
-const SERVER_API = process.env.SERVER_API || "production";
+const SERVER_API = process.env.NODE_ENV || "production";
 
 const API = {
   baseURL:
     SERVER_API === "production"
-      ? "https://repository-server.herokuapp.com/"
+      ? "https://api.repository.studio/"
       : "http://localhost:8000/",
 };
 
