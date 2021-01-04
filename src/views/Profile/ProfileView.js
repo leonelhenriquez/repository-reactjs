@@ -48,6 +48,11 @@ const useStyles = (theme)=>({
     marginRight: "1em",
     width: "75"
   },
+  grid : {
+    margin: "1em 0",
+    marginRight: "1em",
+    width: "75",
+  }
 });
 
 class ProfileView extends React.Component {
@@ -67,42 +72,59 @@ class ProfileView extends React.Component {
     const bull = <span className={classes.bullet}>•</span>;
 
     return <div>
-      <Grid container spacing={1}>
-        <Grid item >
-          <Card className={classes.card}>
-            <CardContent>    
-            <Grid item xs={15}>
-              <Grid container spacing={2}>
-                <Grid item>
-                  <Avatar className = {classes.large} alt={this.state.name} src="../../../logo/repositroy2.svg"/>
-                </Grid>
-                <Grid item>
-                  <Typography variant="h5" component="h2">@{this.state.userName}</Typography>
-                  <Typography variant="body2" componet="p">{this.state.email}</Typography>
-                </Grid>
-              </Grid>
-            </Grid>           
-            </CardContent>
-            <CardActions>
-              <Button className ={classes.button} size="large" >Editar</Button>
-            </CardActions>
-
-          </Card>    
-        </Grid>
-
-        <Grid item xs={7}>
-          <Card className={classes.card2} >
-            <CardContent>
-              <Typography className={classes.title} color="textSecondary" gutterBottom>
-                Mi perfil
-              </Typography>
+      <Grid cointaner className={classes.grid}>
+        <Grid item>
+          <Grid container spacing={5}>
+            <Grid item>
+              <Avatar className = {classes.large} alt={this.state.name} src="../../../logo/repositroy2.sv"/>
+            </Grid>
+            <Grid item>
               <Typography variant="h5" component="h2">{this.state.name} {this.state.lastname}</Typography>
-              <Typography variant="body2" component="p">Favoritos: </Typography>
-              <Typography variant="body2" component="p">Mis recursos: </Typography>
-              <Typography variant="body2" component="p">Ver mas tarde: </Typography>
-            </CardContent>
-          </Card>
+              <Button size="small">Editar perfil</Button>
+              <Button size="small">Cambiar contraseña</Button>
+            </Grid>
+          </Grid>
         </Grid>
+      </Grid>
+      <Grid item>
+        <Card className={classes.card2} >
+          <CardContent>
+            <Typography className={classes.title} color="textSecondary" gutterBottom>Mi perfil</Typography>
+            <Grid container spacing={8}>
+              <Grid item>
+               <Typography variant="body2" component="p">Nombre: </Typography>
+                <Typography variant="body2" component="p">Apellido: </Typography>
+                <Typography variant="body2" component="p">Email: </Typography>
+                <Typography variant="body2" component="p">Usuario: </Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="body2" component="p">{this.state.name}</Typography>
+                <Typography variant="body2" component="p">{this.state.lastname}</Typography>
+                <Typography variant="body2" component="p">{this.state.email}</Typography>
+                <Typography variant="body2" component="p">{this.state.userName}</Typography>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
+      </Grid><Grid item>
+        <Card className={classes.card2} >
+          <CardContent>
+            <Typography className={classes.title} color="textSecondary" gutterBottom>Actividad</Typography>
+            <Typography variant="h5" component="h2"></Typography>
+            <Grid container spacing={8}>
+              <Grid item>
+                <Typography variant="body2" component="p">Favoritos: </Typography>
+                <Typography variant="body2" component="p">Mis recursos: </Typography>
+                <Typography variant="body2" component="p">Ver mas tarde: </Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="body2" component="p"> </Typography>
+                <Typography variant="body2" component="p"> </Typography>
+                <Typography variant="body2" component="p"> </Typography>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
       </Grid>
     </div>;
   }
