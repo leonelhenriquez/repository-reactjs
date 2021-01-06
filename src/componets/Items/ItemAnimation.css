@@ -1,0 +1,17 @@
+.itemani-enter {
+  opacity: 0;
+  transform: translateY(50px);
+}
+.itemani-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.itemani-exit {
+  opacity: 1;
+}
+.itemani-exit-active {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 300ms, transform 300ms;
+}

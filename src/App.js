@@ -13,6 +13,9 @@ import SignoffView from "./views/Signoff/Signoff";
 import SignupView from "./views/Signup/SignupView";
 import ProfileView from "./views/Profile/ProfileView";
 import ResourceView from "./views/ResourceView/ResourceView";
+import ListFavoritesView from "./views/List/ListFavorites/ListFavoritesView";
+import ListWathlaterView from "./views/List/ListWatchlater/ListWatchlater";
+import MyResourcesView from "./views/MyResources/MyResourcesView";
 
 const axios = require("axios");
 
@@ -33,6 +36,7 @@ class App extends React.Component {
       showTabMenu: false,
       tabMenuPosition: 0,
       userData: {
+        id: 0,
         username: "",
         nombre: "",
         apellido: "",
@@ -80,6 +84,7 @@ class App extends React.Component {
             if (typeof data?.username != "undefined") {
               this.setIsLogged(true);
               this.setUserData({
+                id: data.pk,
                 username: data.username,
                 nombre: data.first_name,
                 apellido: data.last_name,
@@ -98,7 +103,6 @@ class App extends React.Component {
           this.setIsLoadingAppBar(false);
         });
     } else {
-      this.setIsLoading(false);
       this.setIsLoading(false);
       this.setIsLoadingAppBar(false);
       this.setIsErrorLoad(false);
@@ -163,7 +167,30 @@ class App extends React.Component {
                           />
                         </Route>
                         <Route path="/resource/:resourceId">
-                          <ResourceView controlApp={this.controlApp} />
+                          <ResourceView
+                            controlApp={this.controlApp}
+                            stateApp={this.state}
+                          />
+                        </Route>
+                        <Route path="/myresources">
+                          <MyResourcesView
+                            controlApp={this.controlApp}
+                            stateApp={this.state}
+                          />
+                        </Route>
+                        <Route path="/list/">
+                          <Route path="/list/favorites">
+                            <ListFavoritesView
+                              controlApp={this.controlApp}
+                              stateApp={this.state}
+                            />
+                          </Route>
+                          <Route path="/list/watchlater">
+                            <ListWathlaterView
+                              controlApp={this.controlApp}
+                              stateApp={this.state}
+                            />
+                          </Route>
                         </Route>
                       </>
                     ) : (

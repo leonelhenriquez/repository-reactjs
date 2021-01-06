@@ -1,60 +1,48 @@
-import { Grid, Typography } from "@material-ui/core";
 import React from "react";
-import ItemResource from "../../componets/Items/ItemResource";
-import API from "../../config/api";
+import { Button, withStyles } from "@material-ui/core";
+import { NoteAddOutlined } from "@material-ui/icons";
+import ListItems from "../../componets/Items/ListItems";
 
-const axios = require("axios");
+const useStyles = (theme) => ({
+  buttonContainer: {
+    textAlign: "right",
+    paddingTop: 32,
+  },
+  buttonAdd: {
+    fontSize: 16,
+    fontWeight: 600,
+    borderRadius: 50,
+  },
+});
 
-const ListItems = (props) => {
-  const listItems = props.dataSource.map((data) => (
-    <Grid item xs={6} key={data.id.toString()}>
-      <ItemResource resource={data} />
-    </Grid>
-  ));
-  return <>{listItems}</>;
-};
-
-export default class HomeLoggedView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dataResource: [],
-    };
-  }
-
+class HomeLoggedView extends React.Component {
   componentDidMount() {
     this.props.controlApp.setShowTabMenu(true);
     this.props.controlApp.setTabMenuPosition(0);
-    this.loadResources();
   }
 
-  loadResources = async () => {
-    axios({
-      method: "GET",
-      url: API.baseURL + "recurso/recurso-list/",
-    }).then((response) => {
-      let data = response.data;
-      if (
-        response.status === 200 &&
-        typeof data?.length != "undefined" &&
-        data.length > 0
-      ) {
-        for (let i = 0; i < data.length; i++) {
-          data[i].imagen = data[i].imagen.replace("/download/", "/get/");
-          data[i].archivo = data[i].archivo.replace("/download/", "/get/");
-        }
-        this.setState({ dataResource: data });
-      }
-    });
-  };
-
   render() {
+    const { classes } = this.props;
     return (
-      <div style={{ paddingTop: 32, paddinBottom: 32 }}>
-        <Grid container justify="center" alignItems="center" spacing={2}>
-          <ListItems dataSource={this.state.dataResource} />
-        </Grid>
+      <div>
+        <div className={classes.buttonContainer}>
+          <Button
+            className={classes.buttonAdd}
+            startIcon={<NoteAddOutlined />}
+            color="secondary"
+            variant="contained"
+          >
+            Agregar recurso
+          </Button>
+        </div>
+        <ListItems
+          load="all"
+          controlApp={this.props.controlApp}
+          stateApp={this.props.stateApp}
+        />
       </div>
     );
   }
 }
+
+export default withStyles(useStyles)(HomeLoggedView);
