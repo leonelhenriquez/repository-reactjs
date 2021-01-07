@@ -25,8 +25,6 @@ import {
 } from "@material-ui/icons";
 import clsx from "clsx";
 import API from "../../config/api";
-import "./ItemAnimation.css";
-import { CSSTransition } from "react-transition-group";
 
 const axios = require("axios");
 
@@ -176,218 +174,216 @@ class ItemResource extends React.Component {
     }
     return (
       <Grid item xs={this.props.showAll ? 12 : 6}>
-        <CSSTransition in={true} timeout={300} classNames="itemani">
-          <Card
-            className={classes.rootItem}
-            style={this.props.showAll && { maxWidth: 800, margin: "0 auto" }}
-          >
-            <CardContent>
-              <a
-                href={"/resource/" + this.props.resource.recurso.id}
-                className={classes.titleLink}
-              >
-                <Typography variant="h5" className={classes.title}>
-                  {this.props.resource.recurso.titulo}
-                </Typography>
-              </a>
-              <Chip
-                className={classes.dateInfo}
-                avatar={<TodayOutlined />}
-                label={this.props.resource.recurso.fecha.replaceAll("-", "/")}
-                variant="outlined"
-              />
-              <Chip
-                className={classes.userInfo}
-                avatar={<AccountCircleOutlined />}
-                label={
-                  this.props.resource.recurso.usuario.first_name +
-                  " " +
-                  this.props.resource.recurso.usuario.last_name
-                }
-                variant="outlined"
-              />
-              <div style={{ display: "block" }}>
-                <Chip
-                  className={classes.infoItem}
-                  avatar={
-                    this.props.resource.recurso.tipo.nombre === "Libro" ? (
-                      <DescriptionOutlined />
-                    ) : (
-                      <BookOutlined />
-                    )
-                  }
-                  label={this.props.resource.recurso.tipo.nombre}
-                  variant="outlined"
-                />
-                <Chip
-                  className={classes.infoItem}
-                  avatar={<CategoryOutlined />}
-                  label={this.props.resource.recurso.categoria.nombre}
-                  variant="outlined"
-                />
-              </div>
-              <div className={classes.extraInfo}>
-                <b>Año de publicación: </b>
-                {this.props.resource.recurso.anyo_publicacion}
-              </div>
-              <div className={classes.extraInfo}>
-                <b>Autor: </b>
-                {this.props.resource.recurso.autor}
-              </div>
-              <Typography
-                variant="body1"
-                className={
-                  this.props.showAll
-                    ? classes.descriptionAll
-                    : classes.description
-                }
-              >
-                <b>Descripción: </b>
-                {this.props.resource.recurso.descripcion}
+        <Card
+          className={classes.rootItem}
+          style={this.props.showAll && { maxWidth: 800, margin: "0 auto" }}
+        >
+          <CardContent>
+            <a
+              href={"/resource/" + this.props.resource.recurso.id}
+              className={classes.titleLink}
+            >
+              <Typography variant="h5" className={classes.title}>
+                {this.props.resource.recurso.titulo}
               </Typography>
-              {this.props.showAll ? (
-                <img
-                  src={this.props.resource.recurso.imagen}
-                  style={{ margin: "25px auto", maxWidth: "100%" }}
-                  alt="img resource"
-                />
-              ) : (
-                <CardMedia
-                  className={classes.image}
-                  image={this.props.resource.recurso.imagen}
-                />
-              )}
-              <div className={classes.containerButtons}>
-                <Button
-                  className={clsx(classes.button, classes.buttonDownload)}
-                  variant="outlined"
-                  color="secondary"
-                  disableElevation
-                  startIcon={<GetAppOutlined />}
-                  onClick={() =>
-                    window.open(this.props.resource.recurso.archivo, "_blank")
-                  }
-                >
-                  Descargar
-                </Button>
-                <Button
-                  className={clsx(
-                    classes.button,
-                    classes.buttonFavorite,
-                    this.props.resource.recurso.isfavorite &&
-                      classes.buttonFavoriteActivate
-                  )}
-                  variant="outlined"
-                  color="secondary"
-                  disableElevation
-                  startIcon={
-                    this.props.resource.recurso.isfavorite ? (
-                      <Favorite />
-                    ) : (
-                      <FavoriteBorderOutlined />
-                    )
-                  }
-                  onClick={() => {
-                    if (this.props.resource.recurso.isfavorite) {
-                      this.removeList(
-                        this.props.stateApp.userData.id,
-                        1,
-                        this.props.resource.recurso.id
-                      );
-                    } else {
-                      this.addList(
-                        this.props.stateApp.userData.id,
-                        1,
-                        this.props.resource.recurso.id
-                      );
-                    }
-                    this.props.resource.recurso.isfavorite = !this.props
-                      .resource.recurso.isfavorite;
-                    this.props.updateStateDataSource();
-                  }}
-                >
-                  {this.props.resource.recurso.isfavorite
-                    ? "Eliminar de favoritos"
-                    : "Agregar a favoritos"}
-                </Button>
-                <Button
-                  className={clsx(
-                    classes.button,
-                    classes.buttonWatchLater,
-                    this.props.resource.recurso.iswatchlater &&
-                      classes.buttonWatchLaterActivate
-                  )}
-                  variant="outlined"
-                  color="secondary"
-                  disableElevation
-                  startIcon={
-                    this.props.resource.recurso.iswatchlater ? (
-                      <WatchLater />
-                    ) : (
-                      <WatchLaterOutlined />
-                    )
-                  }
-                  onClick={() => {
-                    if (this.props.resource.recurso.iswatchlater) {
-                      this.removeList(
-                        this.props.stateApp.userData.id,
-                        2,
-                        this.props.resource.recurso.id
-                      );
-                    } else {
-                      this.addList(
-                        this.props.stateApp.userData.id,
-                        2,
-                        this.props.resource.recurso.id
-                      );
-                    }
-                    this.props.resource.recurso.iswatchlater = !this.props
-                      .resource.recurso.iswatchlater;
-                    this.props.updateStateDataSource();
-                  }}
-                >
-                  {this.props.resource.recurso.iswatchlater
-                    ? "Eliminar de ver más tarde"
-                    : "Agregar a ver más tarde"}
-                </Button>
-                {this.props.resource.recurso.usuario.id ===
-                  this.props.stateApp.userData.id && (
-                  <>
-                    <Button
-                      className={clsx(classes.button, classes.buttonDelete)}
-                      variant="outlined"
-                      color="secondary"
-                      disableElevation
-                      startIcon={<DeleteForever />}
-                      onClick={() => {
-                        this.deleteResource(this.props.resource.recurso.id);
-                        this.props.resource.recurso.deleted = true;
-                        this.props.updateStateDataSource();
-                      }}
-                    >
-                      Eliminar recurso
-                    </Button>
-                    <Button
-                      className={clsx(classes.button, classes.buttonWatchLater)}
-                      variant="outlined"
-                      color="secondary"
-                      disableElevation
-                      startIcon={<EditOutlined />}
-                      onClick={() => {
-                        this.props.controlApp.resourceDialog.edit(
-                          this.props.resource.recurso
-                        );
-                        this.props.controlApp.resourceDialog.open();
-                      }}
-                    >
-                      Editar recurso
-                    </Button>
-                  </>
+            </a>
+            <Chip
+              className={classes.dateInfo}
+              avatar={<TodayOutlined />}
+              label={this.props.resource.recurso.fecha.replaceAll("-", "/")}
+              variant="outlined"
+            />
+            <Chip
+              className={classes.userInfo}
+              avatar={<AccountCircleOutlined />}
+              label={
+                this.props.resource.recurso.usuario.first_name +
+                " " +
+                this.props.resource.recurso.usuario.last_name
+              }
+              variant="outlined"
+            />
+            <div style={{ display: "block" }}>
+              <Chip
+                className={classes.infoItem}
+                avatar={
+                  this.props.resource.recurso.tipo.nombre === "Libro" ? (
+                    <DescriptionOutlined />
+                  ) : (
+                    <BookOutlined />
+                  )
+                }
+                label={this.props.resource.recurso.tipo.nombre}
+                variant="outlined"
+              />
+              <Chip
+                className={classes.infoItem}
+                avatar={<CategoryOutlined />}
+                label={this.props.resource.recurso.categoria.nombre}
+                variant="outlined"
+              />
+            </div>
+            <div className={classes.extraInfo}>
+              <b>Año de publicación: </b>
+              {this.props.resource.recurso.anyo_publicacion}
+            </div>
+            <div className={classes.extraInfo}>
+              <b>Autor: </b>
+              {this.props.resource.recurso.autor}
+            </div>
+            <Typography
+              variant="body1"
+              className={
+                this.props.showAll
+                  ? classes.descriptionAll
+                  : classes.description
+              }
+            >
+              <b>Descripción: </b>
+              {this.props.resource.recurso.descripcion}
+            </Typography>
+            {this.props.showAll ? (
+              <img
+                src={this.props.resource.recurso.imagen}
+                style={{ margin: "25px auto", maxWidth: "100%" }}
+                alt="img resource"
+              />
+            ) : (
+              <CardMedia
+                className={classes.image}
+                image={this.props.resource.recurso.imagen}
+              />
+            )}
+            <div className={classes.containerButtons}>
+              <Button
+                className={clsx(classes.button, classes.buttonDownload)}
+                variant="outlined"
+                color="secondary"
+                disableElevation
+                startIcon={<GetAppOutlined />}
+                onClick={() =>
+                  window.open(this.props.resource.recurso.archivo, "_blank")
+                }
+              >
+                Descargar
+              </Button>
+              <Button
+                className={clsx(
+                  classes.button,
+                  classes.buttonFavorite,
+                  this.props.resource.recurso.isfavorite &&
+                    classes.buttonFavoriteActivate
                 )}
-              </div>
-            </CardContent>
-          </Card>
-        </CSSTransition>
+                variant="outlined"
+                color="secondary"
+                disableElevation
+                startIcon={
+                  this.props.resource.recurso.isfavorite ? (
+                    <Favorite />
+                  ) : (
+                    <FavoriteBorderOutlined />
+                  )
+                }
+                onClick={() => {
+                  if (this.props.resource.recurso.isfavorite) {
+                    this.removeList(
+                      this.props.stateApp.userData.id,
+                      1,
+                      this.props.resource.recurso.id
+                    );
+                  } else {
+                    this.addList(
+                      this.props.stateApp.userData.id,
+                      1,
+                      this.props.resource.recurso.id
+                    );
+                  }
+                  this.props.resource.recurso.isfavorite = !this.props.resource
+                    .recurso.isfavorite;
+                  this.props.updateStateDataSource();
+                }}
+              >
+                {this.props.resource.recurso.isfavorite
+                  ? "Eliminar de favoritos"
+                  : "Agregar a favoritos"}
+              </Button>
+              <Button
+                className={clsx(
+                  classes.button,
+                  classes.buttonWatchLater,
+                  this.props.resource.recurso.iswatchlater &&
+                    classes.buttonWatchLaterActivate
+                )}
+                variant="outlined"
+                color="secondary"
+                disableElevation
+                startIcon={
+                  this.props.resource.recurso.iswatchlater ? (
+                    <WatchLater />
+                  ) : (
+                    <WatchLaterOutlined />
+                  )
+                }
+                onClick={() => {
+                  if (this.props.resource.recurso.iswatchlater) {
+                    this.removeList(
+                      this.props.stateApp.userData.id,
+                      2,
+                      this.props.resource.recurso.id
+                    );
+                  } else {
+                    this.addList(
+                      this.props.stateApp.userData.id,
+                      2,
+                      this.props.resource.recurso.id
+                    );
+                  }
+                  this.props.resource.recurso.iswatchlater = !this.props
+                    .resource.recurso.iswatchlater;
+                  this.props.updateStateDataSource();
+                }}
+              >
+                {this.props.resource.recurso.iswatchlater
+                  ? "Eliminar de ver más tarde"
+                  : "Agregar a ver más tarde"}
+              </Button>
+              {this.props.resource.recurso.usuario.id ===
+                this.props.stateApp.userData.id && (
+                <>
+                  <Button
+                    className={clsx(classes.button, classes.buttonDelete)}
+                    variant="outlined"
+                    color="secondary"
+                    disableElevation
+                    startIcon={<DeleteForever />}
+                    onClick={() => {
+                      this.deleteResource(this.props.resource.recurso.id);
+                      this.props.resource.recurso.deleted = true;
+                      this.props.updateStateDataSource();
+                    }}
+                  >
+                    Eliminar recurso
+                  </Button>
+                  <Button
+                    className={clsx(classes.button, classes.buttonWatchLater)}
+                    variant="outlined"
+                    color="secondary"
+                    disableElevation
+                    startIcon={<EditOutlined />}
+                    onClick={() => {
+                      this.props.controlApp.resourceDialog.edit(
+                        this.props.resource.recurso
+                      );
+                      this.props.controlApp.resourceDialog.open();
+                    }}
+                  >
+                    Editar recurso
+                  </Button>
+                </>
+              )}
+            </div>
+          </CardContent>
+        </Card>
       </Grid>
     );
   }

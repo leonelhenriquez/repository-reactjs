@@ -156,9 +156,8 @@ class ResetPasswordView extends React.Component {
           })
         );
     } else {
-      
       if (this.state.password.length === 0) {
-        this.setErrorMessage("password","El campo esta vacio");
+        this.setErrorMessage("password", "El campo esta vacio");
       }
 
       if (this.state.repeatPassword.length === 0) {
@@ -169,7 +168,7 @@ class ResetPasswordView extends React.Component {
 
   render() {
     const { classes } = this.props;
-  
+
     return (
       <div className={classes.root}>
         <Card className={classes.card}>

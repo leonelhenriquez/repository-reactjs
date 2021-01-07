@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Fade, Grid } from "@material-ui/core";
 import React from "react";
 import API from "../../config/api";
 import LoadingView from "../../views/LoadingView";
@@ -23,6 +23,10 @@ export default class ListItems extends React.Component {
   componentDidMount() {
     this.setState({ isLoading: true });
     this.setState({ showItems: false });
+    this.getResources();
+  }
+
+  getResources() {
     if (this.props.load === "all") {
       this.loadResources();
     } else if (this.props.load === "myresources") {
@@ -34,10 +38,18 @@ export default class ListItems extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.search !== this.props.search) {
+      this.setState({ isLoading: true });
+      this.setState({ showItems: false });
+      this.getResources();
+    }
+  }
+
   loadResources = async () => {
     axios({
       method: "GET",
-      url: API.baseURL + "recurso/recurso-list/",
+      url: API.baseURL + `recurso/recurso-list/?search=${this.props.search}`,
     })
       .then((response) => {
         let data = response.data;
@@ -254,7 +266,11 @@ export default class ListItems extends React.Component {
 
   render() {
     if (this.state.isLoading) {
-      return <LoadingView />;
+      return (
+        <Fade in={true}>
+          <LoadingView />
+        </Fade>
+      );
     } else if (this.state.dataResource.length > 0) {
       const listItems = this.state.dataResource.map((data) => (
         <ItemResource
@@ -268,14 +284,20 @@ export default class ListItems extends React.Component {
       ));
 
       return (
-        <div style={{ paddingTop: 32, paddinBottom: 32 }}>
-          <Grid container justify="center" alignItems="baseline" spacing={2}>
-            {listItems}
-          </Grid>
-        </div>
+        <Fade in={true}>
+          <div style={{ paddingTop: 32, paddinBottom: 32 }}>
+            <Grid container justify="center" alignItems="baseline" spacing={2}>
+              {listItems}
+            </Grid>
+          </div>
+        </Fade>
       );
     } else {
-      return <ErrorVoidView controlApp={this.props.controlApp} />;
+      return (
+        <Fade in={true}>
+          <ErrorVoidView controlApp={this.props.controlApp} />
+        </Fade>
+      );
     }
   }
 }

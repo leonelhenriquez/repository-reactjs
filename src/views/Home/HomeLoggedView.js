@@ -2,6 +2,8 @@ import React from "react";
 import { Button, withStyles } from "@material-ui/core";
 import { NoteAddOutlined } from "@material-ui/icons";
 import ListItems from "../../componets/Items/ListItems";
+import { withRouter } from "react-router-dom";
+const queryString = require("query-string");
 
 const useStyles = (theme) => ({
   buttonContainer: {
@@ -23,6 +25,11 @@ class HomeLoggedView extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const parameters = queryString.parse(this.props.location.search);
+
+    const searchValue =
+      typeof parameters.search != "undefined" ? parameters.search : "";
+
     return (
       <div>
         <div className={classes.buttonContainer}>
@@ -38,6 +45,7 @@ class HomeLoggedView extends React.Component {
         </div>
         <ListItems
           load="all"
+          search={searchValue}
           controlApp={this.props.controlApp}
           stateApp={this.props.stateApp}
         />
@@ -46,4 +54,4 @@ class HomeLoggedView extends React.Component {
   }
 }
 
-export default withStyles(useStyles)(HomeLoggedView);
+export default withStyles(useStyles)(withRouter(HomeLoggedView));
