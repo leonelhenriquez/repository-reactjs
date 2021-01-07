@@ -58,9 +58,12 @@ const ApplicationBar = (props) => {
             {!props.stateApp.isLoadingAppBar &&
               (props.stateApp.isLogged ? (
                 <>
-                  <Fade in={true}>
-                    <Search />
-                  </Fade>
+                  {false && (
+                    <Fade in={true}>
+                      <Search />
+                    </Fade>
+                  )}
+
                   <div className={classes.grow} />
                   <MenuProfile
                     stateApp={props.stateApp}

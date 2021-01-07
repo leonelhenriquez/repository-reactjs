@@ -1,9 +1,6 @@
 import React from "react";
 import { withStyles, Typography } from "@material-ui/core";
-import {
-  SentimentDissatisfiedOutlined,
-  WarningRounded,
-} from "@material-ui/icons";
+import { SentimentDissatisfiedOutlined } from "@material-ui/icons";
 
 const useStyles = (theme) => ({
   rootErrorView: {

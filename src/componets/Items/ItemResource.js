@@ -15,6 +15,7 @@ import {
   CategoryOutlined,
   DeleteForever,
   DescriptionOutlined,
+  EditOutlined,
   Favorite,
   FavoriteBorderOutlined,
   GetAppOutlined,
@@ -247,7 +248,7 @@ class ItemResource extends React.Component {
               {this.props.showAll ? (
                 <img
                   src={this.props.resource.recurso.imagen}
-                  style={{ margin: "25px auto" }}
+                  style={{ margin: "25px auto", maxWidth: "100%" }}
                   alt="img resource"
                 />
               ) : (
@@ -351,20 +352,37 @@ class ItemResource extends React.Component {
                 </Button>
                 {this.props.resource.recurso.usuario.id ===
                   this.props.stateApp.userData.id && (
-                  <Button
-                    className={clsx(classes.button, classes.buttonDelete)}
-                    variant="outlined"
-                    color="secondary"
-                    disableElevation
-                    startIcon={<DeleteForever />}
-                    onClick={() => {
-                      this.deleteResource(this.props.resource.recurso.id);
-                      this.props.resource.recurso.deleted = true;
-                      this.props.updateStateDataSource();
-                    }}
-                  >
-                    Eliminar recurso
-                  </Button>
+                  <>
+                    <Button
+                      className={clsx(classes.button, classes.buttonDelete)}
+                      variant="outlined"
+                      color="secondary"
+                      disableElevation
+                      startIcon={<DeleteForever />}
+                      onClick={() => {
+                        this.deleteResource(this.props.resource.recurso.id);
+                        this.props.resource.recurso.deleted = true;
+                        this.props.updateStateDataSource();
+                      }}
+                    >
+                      Eliminar recurso
+                    </Button>
+                    <Button
+                      className={clsx(classes.button, classes.buttonWatchLater)}
+                      variant="outlined"
+                      color="secondary"
+                      disableElevation
+                      startIcon={<EditOutlined />}
+                      onClick={() => {
+                        this.props.controlApp.resourceDialog.edit(
+                          this.props.resource.recurso
+                        );
+                        this.props.controlApp.resourceDialog.open();
+                      }}
+                    >
+                      Editar recurso
+                    </Button>
+                  </>
                 )}
               </div>
             </CardContent>
@@ -374,5 +392,4 @@ class ItemResource extends React.Component {
     );
   }
 }
-//this.props.resource.recurso.usuario.id===this.props.stateApp.userData.id
 export default withStyles(useStyles)(ItemResource);

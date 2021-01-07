@@ -81,8 +81,12 @@ export default class ListItems extends React.Component {
           let dataResource = [];
           for (let i = 0; i < data.length; i++) {
             data[i].deleted = false;
-            data[i].imagen = data[i].imagen.replace("/download/", "/get/");
-            data[i].archivo = data[i].archivo.replace("/download/", "/get/");
+            data[i].imagen =
+              API.baseURL.substring(0, API.baseURL.length - 1) +
+              data[i].imagen.replace("/download/", "/get/");
+            data[i].archivo =
+              API.baseURL.substring(0, API.baseURL.length - 1) +
+              data[i].archivo.replace("/download/", "/get/");
             data[i].isfavorite = false;
             data[i].iswatchlater = false;
             dataResource.push({ recurso: data[i] });
@@ -257,6 +261,7 @@ export default class ListItems extends React.Component {
           key={data.recurso.id.toString()}
           resource={data}
           updateStateDataSource={this.updateStateDataSource}
+          controlApp={this.props.controlApp}
           stateApp={this.props.stateApp}
           loadView={this.props.load}
         />

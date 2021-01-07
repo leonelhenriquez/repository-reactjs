@@ -16,6 +16,7 @@ import ResourceView from "./views/ResourceView/ResourceView";
 import ListFavoritesView from "./views/List/ListFavorites/ListFavoritesView";
 import ListWathlaterView from "./views/List/ListWatchlater/ListWatchlater";
 import MyResourcesView from "./views/MyResources/MyResourcesView";
+import ResourceFormView from "./views/ResourceForm/ResourceFormView";
 
 const axios = require("axios");
 
@@ -42,6 +43,8 @@ class App extends React.Component {
         apellido: "",
         email: "",
       },
+      openDialogResource: false,
+      editedResource: {},
     };
 
     this.controlApp = {
@@ -54,6 +57,12 @@ class App extends React.Component {
       setShowTabMenu: this.setShowTabMenu,
       historyPush: this.historyPush,
       history: this.props.history,
+      resourceDialog: {
+        edit: this.setEditedResource,
+        add: this.handleOpenDialogResource,
+        open: this.handleOpenDialogResource,
+        close: this.handleCloseDialogResource,
+      },
     };
   }
   setIsLogged = (logged) => this.setState({ isLogged: logged });
@@ -67,6 +76,19 @@ class App extends React.Component {
   setShowTabMenu = (show) => this.setState({ showTabMenu: show });
 
   historyPush = (url) => this.props.history.push(url);
+
+  handleCloseDialogResource = async () => {
+    this.setState({ openDialogResource: false });
+    this.setState({ editedResource: {} });
+  };
+
+  handleOpenDialogResource = async () => {
+    this.setState({ openDialogResource: true });
+  };
+
+  setEditedResource = (resource) => {
+    this.setState({ editedResource: resource });
+  };
 
   loadUser = async () => {
     let token = localStorage.getItem("token");
@@ -157,16 +179,16 @@ class App extends React.Component {
                     </Route>
                     {this.state.isLogged ? (
                       <>
-                        <Route path="/signoff">
+                        <Route path="/signoff" exact>
                           <SignoffView controlApp={this.controlApp} />
                         </Route>
-                        <Route path="/profile">
+                        <Route path="/profile" exact>
                           <ProfileView
                             controlApp={this.controlApp}
                             stateApp={this.state}
                           />
                         </Route>
-                        <Route path="/resource/:resourceId">
+                        <Route path="/resource/:resourceId" exact>
                           <ResourceView
                             controlApp={this.controlApp}
                             stateApp={this.state}
@@ -178,19 +200,17 @@ class App extends React.Component {
                             stateApp={this.state}
                           />
                         </Route>
-                        <Route path="/list/">
-                          <Route path="/list/favorites">
-                            <ListFavoritesView
-                              controlApp={this.controlApp}
-                              stateApp={this.state}
-                            />
-                          </Route>
-                          <Route path="/list/watchlater">
-                            <ListWathlaterView
-                              controlApp={this.controlApp}
-                              stateApp={this.state}
-                            />
-                          </Route>
+                        <Route path="/list/favorites">
+                          <ListFavoritesView
+                            controlApp={this.controlApp}
+                            stateApp={this.state}
+                          />
+                        </Route>
+                        <Route path="/list/watchlater">
+                          <ListWathlaterView
+                            controlApp={this.controlApp}
+                            stateApp={this.state}
+                          />
                         </Route>
                       </>
                     ) : (
@@ -211,6 +231,15 @@ class App extends React.Component {
               )}
             </Container>
           </div>
+
+          {this.state.isLogged && (
+            <ResourceFormView
+              open={this.state.openDialogResource}
+              controlApp={this.controlApp}
+              stateApp={this.state}
+              editedResource={this.state.editedResource}
+            />
+          )}
         </div>
       </ThemeProvider>
     );

@@ -31,6 +31,7 @@ class HomeLoggedView extends React.Component {
             startIcon={<NoteAddOutlined />}
             color="secondary"
             variant="contained"
+            onClick={() => this.props.controlApp.resourceDialog.add()}
           >
             Agregar recurso
           </Button>
