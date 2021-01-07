@@ -320,7 +320,7 @@ class SignupView extends React.Component {
                     value={this.state.password}
                     autoComplete="new-password"
                     error={this.state.errorMessage.password.length > 0}
-                    helperText={this.state.errorMessage.repeatPassword}
+                    helperText={this.state.errorMessage.password}
                     onChange={(event) => {
                       this.setState({ password: event.target.value });
                       this.setErrorMessage(
