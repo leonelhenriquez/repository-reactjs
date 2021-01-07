@@ -17,6 +17,8 @@ import ListFavoritesView from "./views/List/ListFavorites/ListFavoritesView";
 import ListWathlaterView from "./views/List/ListWatchlater/ListWatchlater";
 import MyResourcesView from "./views/MyResources/MyResourcesView";
 import ResourceFormView from "./views/ResourceForm/ResourceFormView";
+import RecoverPasswordView from "./views/RecoverPassword/RecoverPasswordView";
+import ResetPasswordView from "./views/ResetPassword/ResetPasswordView";
 
 const axios = require("axios");
 
@@ -179,16 +181,16 @@ class App extends React.Component {
                     </Route>
                     {this.state.isLogged ? (
                       <>
-                        <Route path="/signoff" exact>
+                        <Route path="/signoff">
                           <SignoffView controlApp={this.controlApp} />
                         </Route>
-                        <Route path="/profile" exact>
+                        <Route path="/profile">
                           <ProfileView
                             controlApp={this.controlApp}
                             stateApp={this.state}
                           />
                         </Route>
-                        <Route path="/resource/:resourceId" exact>
+                        <Route path="/resource/:resourceId">
                           <ResourceView
                             controlApp={this.controlApp}
                             stateApp={this.state}
@@ -220,6 +222,12 @@ class App extends React.Component {
                         </Route>
                         <Route path="/signup">
                           <SignupView controlApp={this.controlApp} />
+                        </Route>
+                        <Route path="/recoverpassword">
+                          <RecoverPasswordView controlApp={this.controlApp} />
+                        </Route>
+                        <Route path="/passwordreset/:uid/:token/">
+                          <ResetPasswordView controlApp={this.controlApp} />
                         </Route>
                       </>
                     )}
