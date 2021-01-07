@@ -240,6 +240,7 @@ class ResourceFormView extends React.Component {
   };
 
   addResource = async () => {
+    this.resetErrorMessage();
     this.setState({ isLoading: true });
     const formData = new FormData();
     formData.append("usuario", this.props.stateApp.userData.id);
@@ -261,6 +262,7 @@ class ResourceFormView extends React.Component {
           this.props.controlApp.resourceDialog.close();
           this.setState({ openDialogInfo: true });
           this.resetState();
+          this.resetErrorMessage();
         } else {
           this.setState({ showError: true });
         }
@@ -309,6 +311,7 @@ class ResourceFormView extends React.Component {
   };
 
   saveEditResource = async () => {
+    this.resetErrorMessage();
     this.setState({ isLoading: true });
     const formData = new FormData();
     formData.append("usuario", this.props.stateApp.userData.id);
@@ -335,6 +338,7 @@ class ResourceFormView extends React.Component {
           this.props.controlApp.resourceDialog.close();
           this.setState({ openDialogInfo: true });
           this.resetState();
+          this.resetErrorMessage();
           setTimeout(() => this.props.controlApp.history.go(0), 2000);
         } else {
           this.setState({ showError: true });
