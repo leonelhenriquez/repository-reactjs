@@ -21,6 +21,7 @@ import {
 import API from "../../config/api";
 import clsx from "clsx";
 import { Alert } from "@material-ui/lab";
+import { Link } from "react-router-dom";
 const axios = require("axios");
 
 const useStyles = (theme) => ({
@@ -173,7 +174,7 @@ class LoginView extends React.Component {
                 label="Correo electronico"
                 variant="outlined"
                 disabled={this.state.diableInputs}
-                value={this.state.userName}
+                value={this.state.email}
                 autoComplete="username"
                 onChange={(event) =>
                   this.setState({ email: event.target.value })
@@ -224,6 +225,7 @@ class LoginView extends React.Component {
                 }}
               />
             </FormControl>
+            <Link to="/recoverpassword">Recuperar contraseña</Link>
             <Button
               variant="contained"
               color="secondary"
