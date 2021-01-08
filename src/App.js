@@ -50,6 +50,7 @@ class App extends React.Component {
     };
 
     this.controlApp = {
+      loadUser: this.loadUser,
       setIsLogged: this.setIsLogged,
       setIsLoading: this.setIsLoading,
       setIsLoadingAppBar: this.setIsLoadingAppBar,

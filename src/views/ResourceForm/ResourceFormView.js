@@ -13,7 +13,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Slide,
   TextField,
   Typography,
   withStyles,
@@ -24,6 +23,7 @@ import withMediaQuery from "../../utils/withMediaQuery";
 import LoadingView from "../LoadingView";
 import { DescriptionOutlined, SaveOutlined } from "@material-ui/icons";
 import { Alert } from "@material-ui/lab";
+import Transition from "../../utils/Transition";
 
 const axios = require("axios");
 
@@ -60,10 +60,6 @@ const useStyles = (theme) => ({
     flexBasis: "68%",
     paddingRight: 16,
   },
-});
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const NumberMask = (props) => {
